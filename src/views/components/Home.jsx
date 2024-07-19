@@ -1,9 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
+import { fetchRecentActivity } from "../../controllers/activityController"; // Ensure the import path is correct
 
 const Home = ({ user }) => {
+  const [activities, setActivities] = useState([]);
+
+  useEffect(() => {
+    const loadActivities = async () => {
+      try {
+        const fetchedActivities = await fetchRecentActivity();
+        console.log("Activities loaded:", fetchedActivities); // Debugging line
+        setActivities(fetchedActivities);
+      } catch (error) {
+        console.error("Error loading activities: ", error);
+      }
+    };
+    loadActivities();
+  }, []);
+
   return (
     <div className="flex h-screen bg-gray-100">
       <Sidebar user={user} />
@@ -53,9 +69,27 @@ const Home = ({ user }) => {
                   <h2 className="text-xl font-semibold mb-2">
                     Recent Activity
                   </h2>
-                  <p className="text-gray-700">
-                    No recent activity to display.
-                  </p>
+                  {activities.length > 0 ? (
+                    <ul className="space-y-2">
+                      {activities.map((activity) => (
+                        <li key={activity.id} className="text-gray-700">
+                          <p className="font-semibold">
+                            {activity.activityType}
+                          </p>
+                          <p>{activity.details}</p>
+                          <p className="text-sm text-gray-500">
+                            {new Date(
+                              activity.timestamp.seconds * 1000
+                            ).toLocaleString()}
+                          </p>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-gray-700">
+                      No recent activity to display.
+                    </p>
+                  )}
                 </div>
                 <div className="bg-green-100 p-4 rounded-lg shadow-sm">
                   <h2 className="text-xl font-semibold mb-2">

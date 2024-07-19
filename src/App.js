@@ -7,10 +7,10 @@ import {
 } from "react-router-dom";
 import { auth } from "./firebase/firebase";
 import Login from "./views/Login";
-import Dashboard from "./views/components/Dashboard";
-import Home from "./views/components/Home";
-import Cases from "./views/components/Cases"; // Make sure to import Cases if it's being used
-import Reporting from "./views/components/Reporting"; // Make sure to import Reporting if it's being used
+import Dashboard from "./views/components/Dashboard"; // Ensure Dashboard is correctly exported
+import Home from "./views/components/Home"; // Ensure Home is correctly exported
+import Cases from "./views/components/Cases"; // Ensure Cases is correctly exported
+import Reporting from "./views/components/Reporting"; // Ensure Reporting is correctly exported
 
 function App() {
   const [user, setUser] = React.useState(null);
