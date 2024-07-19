@@ -23,7 +23,7 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+      <div className="bg-white p-8 py-20 rounded-lg shadow-xl w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center">Log In</h2>
         <form onSubmit={handleEmailSignIn} className="flex flex-col space-y-4">
           <input
@@ -44,7 +44,7 @@ const Login = () => {
           />
           <button
             type="submit"
-            className="w-full px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition"
+            className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-900 transition"
           >
             Login
           </button>

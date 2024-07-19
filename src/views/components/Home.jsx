@@ -33,7 +33,7 @@ const Home = ({ user }) => {
               </h1>
               <p className="text-lg mb-6">
                 Welcome to the Napier NOI Flow application. Here you can manage
-                NOIs, view detailed reports, and more.
+                NOIs, view detailed reports, automate document creation, and more.
               </p>
               <div className="space-y-4">
                 <div className="bg-blue-100 p-4 rounded-lg shadow-sm">
