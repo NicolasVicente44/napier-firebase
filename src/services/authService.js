@@ -1,31 +1,11 @@
-import { auth, googleProvider, microsoftProvider } from "../firebase/firebase";
 import {
-  signInWithPopup,
+  getAuth,
   signInWithEmailAndPassword as firebaseSignInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
 
-// Sign in with Google
-export const signInWithGoogle = async () => {
-  try {
-    const result = await signInWithPopup(auth, googleProvider);
-    // Handle successful sign-in here
-    console.log("Google sign-in successful:", result.user);
-  } catch (error) {
-    console.error("Error signing in with Google:", error);
-  }
-};
-
-// Sign in with Microsoft
-export const signInWithMicrosoft = async () => {
-  try {
-    const result = await signInWithPopup(auth, microsoftProvider);
-    // Handle successful sign-in here
-    console.log("Microsoft sign-in successful:", result.user);
-  } catch (error) {
-    console.error("Error signing in with Microsoft:", error);
-  }
-};
+// Initialize Firebase Authentication
+const auth = getAuth();
 
 // Sign in with Email and Password
 export const signInWithEmailAndPassword = async (email, password) => {
@@ -35,10 +15,13 @@ export const signInWithEmailAndPassword = async (email, password) => {
       email,
       password
     );
-    // Handle successful sign-in here
     console.log("Email sign-in successful:", userCredential.user);
+    return userCredential.user; // Return user for further use if needed
   } catch (error) {
-    console.error("Error signing in with email and password:", error);
+    console.error("Error during email sign-in:", error);
+    throw new Error(
+      `Error signing in with email and password: ${error.message}`
+    );
   }
 };
 
@@ -48,6 +31,7 @@ export const logOut = async () => {
     await signOut(auth);
     console.log("User signed out");
   } catch (error) {
-    console.error("Error signing out:", error);
+    console.error("Error during sign-out:", error);
+    throw new Error(`Error signing out: ${error.message}`);
   }
 };

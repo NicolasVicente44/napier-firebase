@@ -1,29 +1,26 @@
 import React, { useState } from "react";
-import {
-  signInWithGoogle,
-  signInWithMicrosoft,
-  signInWithEmailAndPassword,
-} from "../services/authService";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { signInWithEmailAndPassword } from "../services/authService";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const handleEmailSignIn = async (e) => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(email, password);
+      toast.success("Login in successful!");
     } catch (err) {
-      setError(err.message);
+      toast.error(`Error: ${err.message}`);
     }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Sign In</h2>
-        {error && <p className="text-red-600 mb-4 text-center">{error}</p>}
+        <h2 className="text-2xl font-bold mb-6 text-center">Log In</h2>
         <form onSubmit={handleEmailSignIn} className="flex flex-col space-y-4">
           <input
             type="email"
@@ -48,20 +45,7 @@ const Login = () => {
             Login
           </button>
         </form>
-        <div className="flex flex-col space-y-4 mt-6">
-          <button
-            onClick={signInWithGoogle}
-            className="w-full px-4 py-2 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 transition"
-          >
-            Login with Google
-          </button>
-          <button
-            onClick={signInWithMicrosoft}
-            className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
-          >
-            Login with Microsoft
-          </button>
-        </div>
+        <ToastContainer />
       </div>
     </div>
   );
