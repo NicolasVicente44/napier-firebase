@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 
 const Header = () => {
   return (
     <header className="bg-white shadow">
-      <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-gray-900">Cases</h1>
+      <div className="max-w-7xl mx-auto py-20 px-4 sm:px-6 lg:px-8">
+        <h1 className="text-3xl font-bold text-gray-900">NOI Case Dashboard</h1>
       </div>
     </header>
   );
