@@ -1,8 +1,13 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import { auth } from "./firebase/firebase";
 import Login from "./views/Login";
-import Dashboard from "./views/Dashboard"; // Create this component for authenticated users
+import Dashboard from "./views/components/Dashboard";
 
 function App() {
   const [user, setUser] = React.useState(null);
@@ -15,11 +20,18 @@ function App() {
   return (
     <Router>
       <Routes>
-        {!user ? (
-          <Route path="/" element={<Login />} />
-        ) : (
-          <Route path="/" element={<Dashboard user={user} />} />
-        )}
+        <Route
+          path="/login"
+          element={!user ? <Login /> : <Navigate to="/dashboard" />}
+        />
+        <Route
+          path="/dashboard"
+          element={user ? <Dashboard user={user} /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/"
+          element={<Navigate to={user ? "/dashboard" : "/login"} />}
+        />
       </Routes>
     </Router>
   );

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { signInWithEmailAndPassword } from "../services/authService";
@@ -6,12 +7,15 @@ import { signInWithEmailAndPassword } from "../services/authService";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleEmailSignIn = async (e) => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(email, password);
-      toast.success("Login in successful!");
+      toast.success("Login successful!");
+      // Redirect to dashboard after successful login
+      navigate("/dashboard");
     } catch (err) {
       toast.error(`Error: ${err.message}`);
     }
