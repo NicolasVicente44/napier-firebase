@@ -1,3 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.custom-table-row {
+  padding: 8px 0;
+}

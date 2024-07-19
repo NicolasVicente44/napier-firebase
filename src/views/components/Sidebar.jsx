@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { logOut } from "../../services/authService"; // Adjust the path if necessary
 import logoutsvg from "../../assets/svgs/logout-svgrepo-com.svg"; // Correct SVG import
+import napierLogo from "../../assets/images/logo.png";
 
 const Sidebar = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,7 +45,10 @@ const Sidebar = ({ user }) => {
         } md:translate-x-0`}
       >
         <div>
-          <div className="p-4 text-2xl font-bold">Napier NOI Flow</div>
+          <a href="/" className="p-4 flex   items-center text-2xl font-bold">
+            <img src={napierLogo} className="h-12 mr-3" alt="Napier Logo" />
+            <span className="text-sm flex-nowrap">Napier NOI Flow</span>
+          </a>
           <nav>
             {user && (
               <div className="p-4 border-t border-gray-200">
