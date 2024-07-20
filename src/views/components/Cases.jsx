@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { fetchNois } from "../../controllers/noisController";
@@ -278,6 +279,7 @@ const Cases = ({ user }) => {
                               filteredNois.map((noi) => (
                                 <TableRow
                                   key={noi.id}
+                                  className="hover:bg-gray-200"
                                   sx={{
                                     "&:nth-of-type(odd)": {
                                       backgroundColor: "#f9f9f9",
@@ -291,23 +293,15 @@ const Cases = ({ user }) => {
                                       padding: "22px 16px",
                                     },
                                   }}
+                                  component={Link}
+                                  to={`/noidetails/${noi.id}`}
                                 >
                                   <TableCell>{noi.id || "N/A"}</TableCell>
-                                  <TableCell>
-                                    {noi.clientName || "N/A"}
-                                  </TableCell>
-                                  <TableCell>
-                                    {noi.assetMake || "N/A"}
-                                  </TableCell>
-                                  <TableCell>
-                                    {noi.assetModel || "N/A"}
-                                  </TableCell>
-                                  <TableCell>
-                                    {noi.dateNOISent || "N/A"}
-                                  </TableCell>
-                                  <TableCell>
-                                    {noi.amountOfArrears || "N/A"}
-                                  </TableCell>
+                                  <TableCell>{noi.clientName || "N/A"}</TableCell>
+                                  <TableCell>{noi.assetMake || "N/A"}</TableCell>
+                                  <TableCell>{noi.assetModel || "N/A"}</TableCell>
+                                  <TableCell>{noi.dateNOISent || "N/A"}</TableCell>
+                                  <TableCell>{noi.amountOfArrears || "N/A"}</TableCell>
                                 </TableRow>
                               ))
                             ) : (
@@ -322,59 +316,53 @@ const Cases = ({ user }) => {
                       </TableContainer>
                     </div>
                   )}
+
                   {/* Card View */}
                   {effectiveViewMode === "card" && (
-                    <div className="block">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {filteredNois.length > 0 ? (
                         filteredNois.map((noi) => (
-                          <div
+                          <Link
                             key={noi.id}
-                            className="bg-white my-6 shadow-xl rounded-lg p-4 transition-transform transform hover:scale-105"
+                            to={`/noidetails/${noi.id}`}
+                            className="block"
                           >
-                            <p className="flex items-center mb-2">
-                              <FaIdBadge className="mr-2 text-blue-500" />
-                              <span className="font-semibold">ID: </span>{" "}
-                              {noi.id || "N/A"}
-                            </p>
-                            <p className="flex items-center mb-2">
-                              <FaUser className="mr-2 text-green-500" />
-                              <span className="font-semibold">
-                                Client Name:{" "}
-                              </span>{" "}
-                              {noi.clientName || "N/A"}
-                            </p>
-                            <p className="flex items-center mb-2">
-                              <FaCar className="mr-2 text-red-500" />
-                              <span className="font-semibold">
-                                Asset Make:{" "}
-                              </span>{" "}
-                              {noi.assetMake || "N/A"}
-                            </p>
-                            <p className="flex items-center mb-2">
-                              <FaCar className="mr-2 text-red-500" />
-                              <span className="font-semibold">
-                                Asset Model:{" "}
-                              </span>{" "}
-                              {noi.assetModel || "N/A"}
-                            </p>
-                            <p className="flex items-center mb-2">
-                              <FaCalendar className="mr-2 text-yellow-500" />
-                              <span className="font-semibold">
-                                Date NOI Sent:{" "}
-                              </span>{" "}
-                              {noi.dateNOISent || "N/A"}
-                            </p>
-                            <p className="flex items-center mb-2">
-                              <FaMoneyBillWave className="mr-2 text-purple-500" />
-                              <span className="font-semibold">
-                                Amount of Arrears:{" "}
-                              </span>{" "}
-                              {noi.amountOfArrears || "N/A"}
-                            </p>
-                          </div>
+                            <div className="bg-white my-6 shadow-xl rounded-lg p-4 transition-transform transform hover:scale-105">
+                              <p className="flex items-center mb-2">
+                                <FaIdBadge className="mr-2 text-blue-500" />
+                                <span className="font-semibold">ID: </span>{" "}
+                                {noi.id || "N/A"}
+                              </p>
+                              <p className="flex items-center mb-2">
+                                <FaUser className="mr-2 text-green-500" />
+                                <span className="font-semibold">Client Name: </span>{" "}
+                                {noi.clientName || "N/A"}
+                              </p>
+                              <p className="flex items-center mb-2">
+                                <FaCar className="mr-2 text-red-500" />
+                                <span className="font-semibold">Asset Make: </span>{" "}
+                                {noi.assetMake || "N/A"}
+                              </p>
+                              <p className="flex items-center mb-2">
+                                <FaCar className="mr-2 text-red-500" />
+                                <span className="font-semibold">Asset Model: </span>{" "}
+                                {noi.assetModel || "N/A"}
+                              </p>
+                              <p className="flex items-center mb-2">
+                                <FaCalendar className="mr-2 text-yellow-500" />
+                                <span className="font-semibold">Date NOI Sent: </span>{" "}
+                                {noi.dateNOISent || "N/A"}
+                              </p>
+                              <p className="flex items-center mb-2">
+                                <FaMoneyBillWave className="mr-2 text-purple-500" />
+                                <span className="font-semibold">Amount of Arrears: </span>{" "}
+                                {noi.amountOfArrears || "N/A"}
+                              </p>
+                            </div>
+                          </Link>
                         ))
                       ) : (
-                        <p className="text-gray-700">No NOIs found.</p>
+                        <p className="text-center col-span-full">No NOIs found.</p>
                       )}
                     </div>
                   )}

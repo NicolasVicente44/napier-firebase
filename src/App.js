@@ -15,7 +15,8 @@ import NOICreate from "./views/NOI/NOICreate";
 import Notifications from "./views/components/Notifications";
 import Settings from "./views/components/Settings";
 import Users from "./views/components/Users";
-
+import NOIDetails from "./views/NOI/NOIDetails";
+import NOIMap from "./views/components/NOIMap";
 function App() {
   const [user, setUser] = React.useState(null);
 
@@ -43,6 +44,16 @@ function App() {
           path="/cases"
           element={user ? <Cases user={user} /> : <Navigate to="/login" />}
         />
+        <Route
+          path="/noidetails/:id"
+          element={user ? <NOIDetails user={user} /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/noimap"
+          element={user ? <NOIMap user={user} /> : <Navigate to="/login" />}
+        />
+
         <Route
           path="/reporting"
           element={user ? <Reporting user={user} /> : <Navigate to="/login" />}

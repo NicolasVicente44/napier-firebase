@@ -4,6 +4,7 @@ import { logOut } from "../../services/authService"; // Adjust the path if neces
 import logoutsvg from "../../assets/svgs/logout-svgrepo-com.svg"; // Correct SVG import
 import napierLogo from "../../assets/images/logo.png";
 import userplaceholder from "../../assets/images/userplaceholder.jpg";
+
 const Sidebar = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -11,6 +12,7 @@ const Sidebar = ({ user }) => {
     { name: "Home", path: "/home", icon: "🏠" },
     { name: "Cases", path: "/cases", icon: "📁" },
     { name: "Reporting", path: "/reporting", icon: "📊" },
+    { name: "NOI Map", path: "/noimap", icon: "📍" },
     { name: "Notifications", path: "/notifications", icon: "🔔" },
   ];
 
@@ -24,7 +26,6 @@ const Sidebar = ({ user }) => {
   const handleLogout = async () => {
     try {
       await logOut();
-      // Optionally redirect to the login page or another page after logout
       window.location.href = "/login"; // Adjust the redirect path if necessary
     } catch (error) {
       console.error("Logout failed: ", error);
@@ -35,17 +36,17 @@ const Sidebar = ({ user }) => {
     <>
       <button
         onClick={toggleSidebar}
-        className="md:hidden fixed bottom-6 right-5 z-20 bg-gray-800 text-white py-4 px-6 rounded-md"
+        className="md:hidden fixed bottom-6 right-5 z-30 bg-gray-800 text-white py-4 px-6 rounded-md"
       >
         {isOpen ? "✕" : "☰"}
       </button>
       <aside
-        className={`bg-gray-100 text-gray-800 w-64 flex flex-col justify-between h-screen fixed left-0 top-0 z-10 transition-transform duration-300 ease-in-out ${
+        className={`bg-gray-100 text-gray-800 w-64 flex flex-col justify-between h-screen fixed left-0 top-0 z-40 transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0`}
       >
         <div>
-          <a href="/" className="p-4 flex   items-center text-2xl font-bold">
+          <a href="/" className="p-4 flex items-center text-2xl font-bold">
             <img src={napierLogo} className="h-12 mr-3" alt="Napier Logo" />
             <span className="text-sm flex-nowrap">Napier NOI Flow</span>
           </a>
@@ -65,7 +66,6 @@ const Sidebar = ({ user }) => {
                     </p>
                   </div>
                 </div>
-                {/* Ensure border spans the full width */}
                 <div className="border-t border-gray-200 mt-4"></div>
               </div>
             )}
@@ -117,7 +117,7 @@ const Sidebar = ({ user }) => {
       </aside>
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black opacity-50 z-0 md:hidden"
+          className="fixed inset-0 bg-black opacity-50 z-30 md:hidden"
           onClick={toggleSidebar}
         ></div>
       )}
