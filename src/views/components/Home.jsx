@@ -28,12 +28,13 @@ const Home = ({ user }) => {
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
           <div className="container mx-auto px-6 py-8">
             <div className="bg-white p-6 rounded-lg shadow-md">
-              <h1 className="text-3xl font-bold mb-4">
+              <h1 className="text-lg sm:text-3xl font-bold mb-4">
                 Welcome, {user ? user.email.split("@")[0] : "User"}!
               </h1>
               <p className="text-lg mb-6">
                 Welcome to the Napier NOI Flow application. Here you can manage
-                NOIs, view detailed reports, automate document creation, and more.
+                NOIs, view detailed reports, automate document creation, and
+                more.
               </p>
               <div className="space-y-4">
                 <div className="bg-blue-100 p-4 rounded-lg shadow-sm">

@@ -17,6 +17,7 @@ import {
   FaCar,
   FaCalendar,
   FaMoneyBillWave,
+  FaSort,
 } from "react-icons/fa";
 import CircularProgress from "@mui/material/CircularProgress";
 import Fuse from "fuse.js";
@@ -25,6 +26,8 @@ const Cases = ({ user }) => {
   const [nois, setNois] = useState([]);
   const [filteredNois, setFilteredNois] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [sortDirection, setSortDirection] = useState("asc");
+  const [sortColumn, setSortColumn] = useState("id");
 
   useEffect(() => {
     const loadNois = async () => {
@@ -60,6 +63,43 @@ const Cases = ({ user }) => {
     // Handle create NOI case logic here
     console.log("Create NOI Case");
   };
+  const handleSort = (column) => {
+    const direction =
+      sortColumn === column && sortDirection === "asc" ? "desc" : "asc";
+    setSortDirection(direction);
+    setSortColumn(column);
+
+    const sortedNois = [...filteredNois].sort((a, b) => {
+      const getValue = (item) =>
+        item[column] === "N/A" || item[column] === undefined
+          ? Infinity
+          : item[column];
+      const valueA = getValue(a);
+      const valueB = getValue(b);
+
+      if (valueA === Infinity && valueB !== Infinity) return 1;
+    if (valueB === Infinity && valueA !== Infinity) return -1;
+
+      if (typeof valueA === "number" && typeof valueB === "number") {
+        // Numeric values sorting
+        return direction === "asc" ? valueA - valueB : valueB - valueA;
+      } else if (Date.parse(valueA) && Date.parse(valueB)) {
+        // Date sorting
+        const dateA = new Date(valueA);
+        const dateB = new Date(valueB);
+        return direction === "asc" ? dateA - dateB : dateB - dateA;
+      } else {
+        // Text sorting
+        const valA = (valueA || "").toString().toLowerCase();
+        const valB = (valueB || "").toString().toLowerCase();
+        if (valA < valB) return direction === "asc" ? -1 : 1;
+        if (valA > valB) return direction === "asc" ? 1 : -1;
+        return 0;
+      }
+    });
+
+    setFilteredNois(sortedNois);
+  };
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -76,17 +116,126 @@ const Cases = ({ user }) => {
                 </div>
               ) : (
                 <>
+                  {/* Desktop Table */}
                   <div className="hidden md-custom:block">
                     <TableContainer component={Paper}>
                       <Table>
                         <TableHead>
                           <TableRow>
-                            <TableCell>ID</TableCell>
-                            <TableCell>Client Name</TableCell>
-                            <TableCell>Asset Make</TableCell>
-                            <TableCell>Asset Model</TableCell>
-                            <TableCell>Date NOI Sent</TableCell>
-                            <TableCell>Amount of Arrears</TableCell>
+                            <TableCell>
+                              <div className="flex items-center">
+                                ID
+                                <button
+                                  onClick={() => handleSort("id")}
+                                  className="ml-2"
+                                >
+                                  <FaSort
+                                    className={`text-gray-500 ${
+                                      sortColumn === "id"
+                                        ? sortDirection === "asc"
+                                          ? ""
+                                          : "rotate-180"
+                                        : ""
+                                    }`}
+                                  />
+                                </button>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center">
+                                Client Name
+                                <button
+                                  onClick={() => handleSort("clientName")}
+                                  className="ml-2"
+                                >
+                                  <FaSort
+                                    className={`text-gray-500 ${
+                                      sortColumn === "clientName"
+                                        ? sortDirection === "asc"
+                                          ? ""
+                                          : "rotate-180"
+                                        : ""
+                                    }`}
+                                  />
+                                </button>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center">
+                                Asset Make
+                                <button
+                                  onClick={() => handleSort("assetMake")}
+                                  className="ml-2"
+                                >
+                                  <FaSort
+                                    className={`text-gray-500 ${
+                                      sortColumn === "assetMake"
+                                        ? sortDirection === "asc"
+                                          ? ""
+                                          : "rotate-180"
+                                        : ""
+                                    }`}
+                                  />
+                                </button>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center">
+                                Asset Model
+                                <button
+                                  onClick={() => handleSort("assetModel")}
+                                  className="ml-2"
+                                >
+                                  <FaSort
+                                    className={`text-gray-500 ${
+                                      sortColumn === "assetModel"
+                                        ? sortDirection === "asc"
+                                          ? ""
+                                          : "rotate-180"
+                                        : ""
+                                    }`}
+                                  />
+                                </button>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center">
+                                Date NOI Sent
+                                <button
+                                  onClick={() => handleSort("dateNOISent")}
+                                  className="ml-2"
+                                >
+                                  <FaSort
+                                    className={`text-gray-500 ${
+                                      sortColumn === "dateNOISent"
+                                        ? sortDirection === "asc"
+                                          ? ""
+                                          : "rotate-180"
+                                        : ""
+                                    }`}
+                                  />
+                                </button>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center">
+                                Amount of Arrears
+                                <button
+                                  onClick={() => handleSort("amountOfArrears")}
+                                  className="ml-2"
+                                >
+                                  <FaSort
+                                    className={`text-gray-500 ${
+                                      sortColumn === "amountOfArrears"
+                                        ? sortDirection === "asc"
+                                          ? ""
+                                          : "rotate-180"
+                                        : ""
+                                    }`}
+                                  />
+                                </button>
+                              </div>
+                            </TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
@@ -102,19 +251,22 @@ const Cases = ({ user }) => {
                                     backgroundColor: "#ffffff",
                                   },
                                   marginBottom: "8px",
-                                  // Add padding here
                                   padding: "24px 0",
                                   "& td": {
                                     padding: "22px 16px", // Padding inside TableCell
                                   },
                                 }}
                               >
-                                <TableCell>{noi.id}</TableCell>
-                                <TableCell>{noi.clientName}</TableCell>
-                                <TableCell>{noi.assetMake}</TableCell>
-                                <TableCell>{noi.assetModel}</TableCell>
-                                <TableCell>{noi.dateNOISent}</TableCell>
-                                <TableCell>{noi.amountOfArrears}</TableCell>
+                                <TableCell>{noi.id || "N/A"}</TableCell>
+                                <TableCell>{noi.clientName || "N/A"}</TableCell>
+                                <TableCell>{noi.assetMake || "N/A"}</TableCell>
+                                <TableCell>{noi.assetModel || "N/A"}</TableCell>
+                                <TableCell>
+                                  {noi.dateNOISent || "N/A"}
+                                </TableCell>
+                                <TableCell>
+                                  {noi.amountOfArrears || "N/A"}
+                                </TableCell>
                               </TableRow>
                             ))
                           ) : (
@@ -128,51 +280,53 @@ const Cases = ({ user }) => {
                       </Table>
                     </TableContainer>
                   </div>
-                  <div className="block  md-custom:hidden">
+                  {/* Mobile View */}
+                  <div className="block md-custom:hidden">
                     {filteredNois.length > 0 ? (
                       filteredNois.map((noi) => (
                         <div
                           key={noi.id}
-                          className="bg-white my-6  shadow-xl rounded-lg p-4  transition-transform transform hover:scale-105"
+                          className="bg-white my-6 shadow-xl rounded-lg p-4 transition-transform transform hover:scale-105"
                         >
                           <p className="flex items-center mb-2">
                             <FaIdBadge className="mr-2 text-blue-500" />
-                            <span className="font-semibold">ID: </span> {noi.id}
+                            <span className="font-semibold">ID: </span>{" "}
+                            {noi.id || "N/A"}
                           </p>
                           <p className="flex items-center mb-2">
                             <FaUser className="mr-2 text-green-500" />
                             <span className="font-semibold">
                               Client Name:{" "}
                             </span>{" "}
-                            {noi.clientName}
+                            {noi.clientName || "N/A"}
                           </p>
                           <p className="flex items-center mb-2">
                             <FaCar className="mr-2 text-red-500" />
                             <span className="font-semibold">
                               Asset Make:{" "}
                             </span>{" "}
-                            {noi.assetMake}
+                            {noi.assetMake || "N/A"}
                           </p>
                           <p className="flex items-center mb-2">
                             <FaCar className="mr-2 text-red-500" />
                             <span className="font-semibold">
                               Asset Model:{" "}
                             </span>{" "}
-                            {noi.assetModel}
+                            {noi.assetModel || "N/A"}
                           </p>
                           <p className="flex items-center mb-2">
                             <FaCalendar className="mr-2 text-yellow-500" />
                             <span className="font-semibold">
-                              Date NOI Sent:
+                              Date NOI Sent:{" "}
                             </span>{" "}
-                            {noi.dateNOISent}
+                            {noi.dateNOISent || "N/A"}
                           </p>
                           <p className="flex items-center mb-2">
                             <FaMoneyBillWave className="mr-2 text-purple-500" />
                             <span className="font-semibold">
-                              Amount of Arrears:
+                              Amount of Arrears:{" "}
                             </span>{" "}
-                            {noi.amountOfArrears}
+                            {noi.amountOfArrears || "N/A"}
                           </p>
                         </div>
                       ))

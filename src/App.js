@@ -12,6 +12,10 @@ import Home from "./views/components/Home"; // Ensure Home is correctly exported
 import Cases from "./views/components/Cases"; // Ensure Cases is correctly exported
 import Reporting from "./views/components/Reporting"; // Ensure Reporting is correctly exported
 import NOICreate from "./views/NOI/NOICreate";
+import Notifications from "./views/components/Notifications";
+import Settings from "./views/components/Settings";
+import Users from "./views/components/Users";
+
 function App() {
   const [user, setUser] = React.useState(null);
 
@@ -44,10 +48,22 @@ function App() {
           element={user ? <Reporting user={user} /> : <Navigate to="/login" />}
         />
         <Route
-          path="/create-noi"
+          path="/notifications"
           element={
-            user ? <NOICreate user={user} /> : <Navigate to="/create-noi" />
+            user ? <Notifications user={user} /> : <Navigate to="/login" />
           }
+        />
+        <Route
+          path="/settings"
+          element={user ? <Settings user={user} /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/users"
+          element={user ? <Users user={user} /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/create-noi"
+          element={user ? <NOICreate user={user} /> : <Navigate to="/login" />}
         />
         <Route path="/" element={<Navigate to={user ? "/home" : "/login"} />} />
       </Routes>

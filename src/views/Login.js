@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { signInWithEmailAndPassword } from "../services/authService";
-
+import logo from "../assets/images/logo.png";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,7 +15,7 @@ const Login = () => {
       await signInWithEmailAndPassword(email, password);
       toast.success("Login successful!");
       // Redirect to dashboard after successful login
-      navigate("/dashboard");
+      navigate("/home");
     } catch (err) {
       toast.error(`Error: ${err.message}`);
     }
@@ -24,7 +24,8 @@ const Login = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 py-20 rounded-lg shadow-xl w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Log In</h2>
+        <img src={logo} alt="Napier Logo" className="w-35 h-24 mx-auto mb-8" />
+        <h2 className="text-2xl font-bold mb-6 text-center">Napier NOI Flow</h2>
         <form onSubmit={handleEmailSignIn} className="flex flex-col space-y-4">
           <input
             type="email"

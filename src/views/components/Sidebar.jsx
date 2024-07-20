@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { logOut } from "../../services/authService"; // Adjust the path if necessary
 import logoutsvg from "../../assets/svgs/logout-svgrepo-com.svg"; // Correct SVG import
 import napierLogo from "../../assets/images/logo.png";
-
+import userplaceholder from "../../assets/images/userplaceholder.jpg";
 const Sidebar = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -54,7 +54,7 @@ const Sidebar = ({ user }) => {
               <div className="p-4 border-t border-gray-200">
                 <div className="flex items-center">
                   <img
-                    src={user.photoURL || "https://via.placeholder.com/40"}
+                    src={user.photoURL || userplaceholder}
                     alt="User"
                     className="w-10 h-10 rounded-full mr-3"
                   />
