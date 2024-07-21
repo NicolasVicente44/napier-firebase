@@ -127,17 +127,29 @@ const NOIDetails = ({ user }) => {
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
           <div className="container mx-auto px-6 py-8">
             <div className="bg-white p-6 rounded-lg shadow-md relative">
-              <h1 className="text-3xl font-bold mb-6">NOI Details</h1>
-              <button
-                onClick={handleFavorite}
-                className="absolute top-6 right-6 text-3xl"
-              >
-                {favorite ? (
-                  <AiFillStar className="text-yellow-500" />
-                ) : (
-                  <AiOutlineStar className="text-gray-500" />
-                )}
-              </button>
+              <div className="flex items-center mb-6">
+                <h1 className="text-3xl font-bold flex-1">
+                  NOI Details{" "}
+                  <span
+                    className={`text-xl  font-semibold ${
+                      noi.closed ? "text-red-500" : "text-green-500"
+                    } ml-4`}
+                  >
+                    {noi.closed ? "Closed" : "Open"}
+                  </span>
+                </h1>
+
+                <button
+                  onClick={handleFavorite}
+                  className="absolute top-6 right-6 text-3xl"
+                >
+                  {favorite ? (
+                    <AiFillStar className="text-yellow-500" />
+                  ) : (
+                    <AiOutlineStar className="text-gray-500" />
+                  )}
+                </button>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   {[
@@ -248,16 +260,16 @@ const NOIDetails = ({ user }) => {
           <p>Are you sure you want to delete this NOI?</p>
           <div className="mt-6 flex justify-end space-x-4">
             <button
+              onClick={() => setShowDeleteModal(false)}
+              className="bg-gray-300 text-gray-800 px-4 py-2 rounded"
+            >
+              Cancel
+            </button>
+            <button
               onClick={handleDelete}
               className="bg-red-500 text-white px-4 py-2 rounded"
             >
               Delete
-            </button>
-            <button
-              onClick={() => setShowDeleteModal(false)}
-              className="bg-gray-500 text-white px-4 py-2 rounded"
-            >
-              Cancel
             </button>
           </div>
         </div>
@@ -279,16 +291,18 @@ const NOIDetails = ({ user }) => {
           </p>
           <div className="mt-6 flex justify-end space-x-4">
             <button
-              onClick={handleCloseOrReopenCase}
-              className="bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              {noi.closed ? "Reopen" : "Close"}
-            </button>
-            <button
               onClick={() => setShowCloseModal(false)}
-              className="bg-gray-500 text-white px-4 py-2 rounded"
+              className="bg-gray-300 text-gray-800 px-4 py-2 rounded"
             >
               Cancel
+            </button>
+            <button
+              onClick={handleCloseOrReopenCase}
+              className={`${
+                noi.closed ? "bg-green-500" : "bg-yellow-500"
+              } text-white px-4 py-2 rounded`}
+            >
+              {noi.closed ? "Reopen Case" : "Close Case"}
             </button>
           </div>
         </div>
