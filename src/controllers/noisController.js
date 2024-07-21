@@ -49,16 +49,21 @@ export const fetchNoiById = async (id) => {
   }
 };
 
-// Add a new NOI
-export const addNoi = async (templateName, templateFileUrl) => {
+// noisController.js
+export async function createNOI(data) {
   try {
-    await addDoc(collection(db, "nois"), { templateName, templateFileUrl });
-  } catch (error) {
-    console.error("Error adding NOI: ", error);
-    throw error;
+    const docRef = await addDoc(collection(db, "nois"), {
+      ...data,
+      createdAt: new Date(),
+      closed: false,
+    });
+    console.log("Document written with ID:", docRef.id);
+    return docRef.id;
+  } catch (e) {
+    console.error("Error adding document:", e);
+    throw e;
   }
-};
-
+}
 // Update an existing NOI
 export const updateNoiById = async (id, data) => {
   try {
@@ -104,14 +109,3 @@ export const reopenNoiById = async (id) => {
 };
 
 // Add a favorite NOI for a user
-export const addFavorite = async (userId, noiId) => {
-  try {
-    await addDoc(collection(db, "favorites"), {
-      userId,
-      noiId,
-    });
-  } catch (error) {
-    console.error("Error adding favorite: ", error);
-    throw error;
-  }
-};

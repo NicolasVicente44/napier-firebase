@@ -1,7 +1,18 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore"; // Import Firestore
+import {
+  getFirestore,
+  Timestamp,
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs,
+  orderBy,
+  limit,
+  writeBatch,
+} from "firebase/firestore"; // Import Firestore functions
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -18,4 +29,16 @@ const auth = getAuth(app);
 const analytics = getAnalytics(app);
 const db = getFirestore(app); // Initialize Firestore
 
-export { auth, db };
+export {
+  auth,
+  db,
+  Timestamp,
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs,
+  orderBy,
+  limit,
+  writeBatch,
+}; // Export Firestore functions

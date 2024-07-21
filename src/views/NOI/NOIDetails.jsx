@@ -10,11 +10,11 @@ import {
   deleteNoiById,
   closeNoiById,
   reopenNoiById,
-} from "../../controllers/noisController"; // Ensure the import path is correct
+} from "../../controllers/noisController";
 import {
   addFavorite,
   removeFavorite,
-  isFavorite,
+  isFavorite
 } from "../../controllers/favoritesController";
 import Map from "../components/Map";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -121,7 +121,7 @@ const NOIDetails = ({ user }) => {
   return (
     <div className="flex h-screen bg-gray-100">
       <ToastContainer />
-      <Sidebar user={user} /> {/* Sidebar should have higher z-index */}
+      <Sidebar user={user} />
       <div className="flex-1 flex flex-col overflow-hidden md:ml-64 lg:ml-80">
         <Header />
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
@@ -140,7 +140,6 @@ const NOIDetails = ({ user }) => {
               </button>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
-                  {/* Form Fields */}
                   {[
                     "id",
                     "clientName",
@@ -222,10 +221,10 @@ const NOIDetails = ({ user }) => {
       <Modal
         isOpen={showDeleteModal}
         onRequestClose={() => setShowDeleteModal(false)}
-        className="modal"
-        overlayClassName="overlay"
+        className="fixed inset-0 flex items-center justify-center z-50"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-75 z-40"
       >
-        <div className="p-6">
+        <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
           <h2 className="text-2xl font-bold mb-4">Confirm Delete</h2>
           <p>Are you sure you want to delete this NOI?</p>
           <div className="mt-6 flex justify-end space-x-4">
@@ -247,16 +246,13 @@ const NOIDetails = ({ user }) => {
       <Modal
         isOpen={showCloseModal}
         onRequestClose={() => setShowCloseModal(false)}
-        className="modal"
-        overlayClassName="overlay"
+        className="fixed inset-0 flex items-center justify-center z-50"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-75 z-40"
       >
-        <div className="p-6">
-          <h2 className="text-2xl font-bold mb-4">
-            Confirm Case Status Change
-          </h2>
+        <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+          <h2 className="text-2xl font-bold mb-4">Confirm Case Status Change</h2>
           <p>
-            Are you sure you want to {noi.closed ? "reopen" : "close"} this NOI
-            case?
+            Are you sure you want to {noi.closed ? "reopen" : "close"} this NOI case?
           </p>
           <div className="mt-6 flex justify-end space-x-4">
             <button

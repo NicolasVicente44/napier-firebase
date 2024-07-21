@@ -20,8 +20,8 @@ const MapBounds = ({ locations }) => {
   React.useEffect(() => {
     if (locations && locations.length > 0) {
       const bounds = locations.reduce((bounds, location) => {
-        return bounds.extend([location.lat, location.lng]);
-      }, L.latLngBounds([locations[0].lat, locations[0].lng]));
+        return bounds.extend([location.latitude, location.longitude]);
+      }, L.latLngBounds([locations[0].latitude, locations[0].longitude]));
 
       map.fitBounds(bounds);
     }
@@ -34,12 +34,12 @@ const MapBounds = ({ locations }) => {
 const calculateAverageLocation = (locations) => {
   if (locations.length === 0) return null;
 
-  const latSum = locations.reduce((sum, loc) => sum + loc.lat, 0);
-  const lngSum = locations.reduce((sum, loc) => sum + loc.lng, 0);
+  const latSum = locations.reduce((sum, loc) => sum + loc.latitude, 0);
+  const lngSum = locations.reduce((sum, loc) => sum + loc.longitude, 0);
 
   return {
-    lat: latSum / locations.length,
-    lng: lngSum / locations.length,
+    latitude: latSum / locations.length,
+    longitude: lngSum / locations.length,
   };
 };
 
@@ -48,7 +48,11 @@ const AggregateMap = ({ locations }) => {
 
   return (
     <MapContainer
-      center={averageLocation || [51.505, -0.09]} // Default center
+      center={
+        averageLocation
+          ? [averageLocation.latitude, averageLocation.longitude]
+          : [51.505, -0.09]
+      } // Default center
       zoom={13}
       style={{ height: "100%", width: "100%" }}
     >
@@ -60,12 +64,15 @@ const AggregateMap = ({ locations }) => {
         <>
           <MapBounds locations={locations} />
           {locations.map((location, index) => (
-            <Marker key={index} position={[location.lat, location.lng]}>
+            <Marker
+              key={index}
+              position={[location.latitude, location.longitude]}
+            >
               <Popup>
                 <div>
                   <p>Location</p>
-                  <p>Latitude: {location.lat}</p>
-                  <p>Longitude: {location.lng}</p>
+                  <p>Latitude: {location.latitude}</p>
+                  <p>Longitude: {location.longitude}</p>
                 </div>
               </Popup>
             </Marker>

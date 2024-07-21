@@ -14,14 +14,14 @@ const defaultIcon = new L.Icon({
 L.Marker.prototype.options.icon = defaultIcon;
 
 const Map = ({ location }) => {
-  // Check if the location data is valid
-  const hasLocationData = location && location.lat && location.lng;
+// Check if the location data is valid
+  const hasLocationData = location && location.latitude && location.longitude;
 
   return (
     <div className="relative h-full w-full">
       {hasLocationData ? (
         <MapContainer
-          center={[location.lat, location.lng]}
+          center={[location.latitude, location.longitude]}
           zoom={13}
           style={{ height: "100%", width: "100%" }}
         >
@@ -29,12 +29,12 @@ const Map = ({ location }) => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
-          <Marker position={[location.lat, location.lng]}>
+          <Marker position={[location.latitude, location.longitude]}>
             <Popup>
               <div>
                 <p>Location</p>
-                <p>Latitude: {location.lat}</p>
-                <p>Longitude: {location.lng}</p>
+                <p>Latitude: {location.latitude}</p>
+                <p>Longitude: {location.longitude}</p>
               </div>
             </Popup>
           </Marker>
