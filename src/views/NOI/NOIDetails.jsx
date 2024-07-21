@@ -14,7 +14,7 @@ import {
 import {
   addFavorite,
   removeFavorite,
-  isFavorite
+  isFavorite,
 } from "../../controllers/favoritesController";
 import Map from "../components/Map";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -173,6 +173,25 @@ const NOIDetails = ({ user }) => {
                   <div className="relative h-80 bg-gray-200 rounded-lg overflow-hidden z-0">
                     <Map location={noi.NOILocation} />
                   </div>
+                  {/* Add the Location Description below the map */}
+                  <div className="mt-4 p-4 bg-white border border-gray-300 rounded-lg shadow-sm">
+                    <h3 className="text-lg font-medium mb-2">
+                      Location Description
+                    </h3>
+                    {isEdit ? (
+                      <textarea
+                        name="locationDescription"
+                        value={noi.locationDescription || ""}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border rounded"
+                        rows="3"
+                      />
+                    ) : (
+                      <p>
+                        {noi.locationDescription || "No description available"}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
               <div className="flex justify-end mt-6 space-x-4">
@@ -250,18 +269,20 @@ const NOIDetails = ({ user }) => {
         overlayClassName="fixed inset-0 bg-black bg-opacity-75 z-40"
       >
         <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
-          <h2 className="text-2xl font-bold mb-4">Confirm Case Status Change</h2>
+          <h2 className="text-2xl font-bold mb-4">
+            {noi.closed ? "Confirm Reopen" : "Confirm Close"}
+          </h2>
           <p>
-            Are you sure you want to {noi.closed ? "reopen" : "close"} this NOI case?
+            {noi.closed
+              ? "Are you sure you want to reopen this NOI case?"
+              : "Are you sure you want to close this NOI case?"}
           </p>
           <div className="mt-6 flex justify-end space-x-4">
             <button
               onClick={handleCloseOrReopenCase}
-              className={`${
-                noi.closed ? "bg-green-500" : "bg-yellow-500"
-              } text-white px-4 py-2 rounded`}
+              className="bg-blue-500 text-white px-4 py-2 rounded"
             >
-              {noi.closed ? "Reopen Case" : "Close Case"}
+              {noi.closed ? "Reopen" : "Close"}
             </button>
             <button
               onClick={() => setShowCloseModal(false)}
