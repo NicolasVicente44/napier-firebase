@@ -1,5 +1,13 @@
 import { db } from "../firebase/firebase"; // Make sure to configure Firebase and export `db` from your Firebase setup
-import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  updateDoc,
+  deleteDoc,
+  addDoc,
+} from "firebase/firestore";
 
 export const fetchNois = async () => {
   try {
@@ -35,7 +43,7 @@ export const fetchNoiById = async (id) => {
 // Add a new NOI
 export const addNoi = async (templateName, templateFileUrl) => {
   try {
-    await db.collection("nois").add({ templateName, templateFileUrl });
+    await addDoc(collection(db, "nois"), { templateName, templateFileUrl });
   } catch (error) {
     console.error("Error adding NOI: ", error);
     throw error;
@@ -43,12 +51,10 @@ export const addNoi = async (templateName, templateFileUrl) => {
 };
 
 // Update an existing NOI
-export const updateNoi = async (id, templateName, templateFileUrl) => {
+export const updateNoiById = async (id, data) => {
   try {
-    await db
-      .collection("nois")
-      .doc(id)
-      .update({ templateName, templateFileUrl });
+    const docRef = doc(db, "nois", id);
+    await updateDoc(docRef, data);
   } catch (error) {
     console.error("Error updating NOI: ", error);
     throw error;
@@ -56,11 +62,34 @@ export const updateNoi = async (id, templateName, templateFileUrl) => {
 };
 
 // Delete an existing NOI
-export const deleteNoi = async (id) => {
+export const deleteNoiById = async (id) => {
   try {
-    await db.collection("nois").doc(id).delete();
+    const docRef = doc(db, "nois", id);
+    await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting NOI: ", error);
+    throw error;
+  }
+};
+
+// Close an existing NOI case (set a boolean field 'closed' to true)
+export const closeNoiById = async (id) => {
+  try {
+    const docRef = doc(db, "nois", id);
+    await updateDoc(docRef, { closed: true });
+  } catch (error) {
+    console.error("Error closing NOI case: ", error);
+    throw error;
+  }
+};
+
+// Reopen an existing NOI case (set a boolean field 'closed' to false)
+export const reopenNoiById = async (id) => {
+  try {
+    const docRef = doc(db, "nois", id);
+    await updateDoc(docRef, { closed: false });
+  } catch (error) {
+    console.error("Error reopening NOI case: ", error);
     throw error;
   }
 };

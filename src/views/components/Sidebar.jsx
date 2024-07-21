@@ -10,10 +10,12 @@ const Sidebar = ({ user }) => {
 
   const navItems = [
     { name: "Home", path: "/home", icon: "🏠" },
-    { name: "Cases", path: "/cases", icon: "📁" },
-    { name: "Reporting", path: "/reporting", icon: "📊" },
+    { name: "NOI Cases", path: "/cases", icon: "📁" },
     { name: "NOI Map", path: "/noimap", icon: "📍" },
+    { name: "Reporting", path: "/reporting", icon: "📊" },
+    { name: "NOI Documents", path: "/documents", icon: "📄" },
     { name: "Notifications", path: "/notifications", icon: "🔔" },
+    { name: "Favourites", path: "/favourites", icon: "⭐" },
   ];
 
   const bottomItems = [

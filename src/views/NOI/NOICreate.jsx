@@ -84,12 +84,15 @@ const NOICreate = ({ user }) => {
       <div className="flex-1 flex flex-col overflow-hidden md:ml-64 lg:ml-80">
         <EmptyHeader />
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
-          <Container maxWidth="sm" className="py-8">
+          <div className="container mx-auto px-6 py-8">
             <div className="bg-white p-6 rounded-lg shadow-md">
-              <Typography variant="h4" gutterBottom>
+              <Typography className="text-center" variant="h4" gutterBottom>
                 Create New NOI Case
               </Typography>
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form
+                onSubmit={handleSubmit}
+                className="space-y-4 lg:max-w-[60%] md-custom:max-w-[50%] w-full mx-auto"
+              >
                 <TextField
                   fullWidth
                   label="Client Name"
@@ -166,7 +169,7 @@ const NOICreate = ({ user }) => {
                 </Button>
               </form>
             </div>
-          </Container>
+          </div>
         </main>
       </div>
     </div>
