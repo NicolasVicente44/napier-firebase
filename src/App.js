@@ -16,7 +16,7 @@ import Notifications from "./views/components/Notifications";
 import Settings from "./views/components/Settings";
 import Users from "./views/components/Users";
 import NOIDetails from "./views/NOI/NOIDetails";
-import Favourites from "./views/components/Favourites";
+import Favourites from "./views/components/Favorites";
 import NOIMap from "./views/components/NOIMap";
 import Documents from "./views/components/Documents";
 

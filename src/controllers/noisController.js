@@ -1,3 +1,5 @@
+// noisController.js
+
 import { db } from "../firebase/firebase"; // Ensure Firebase is properly configured and exported
 import {
   collection,
@@ -9,6 +11,9 @@ import {
   addDoc,
   arrayUnion,
   arrayRemove,
+  query,
+  where,
+  FieldPath,
 } from "firebase/firestore";
 
 // Fetch all NOIs
@@ -98,55 +103,15 @@ export const reopenNoiById = async (id) => {
   }
 };
 
-// Add a NOI to user's favourites
-export const addFavourite = async (userId, noiId) => {
+// Add a favorite NOI for a user
+export const addFavorite = async (userId, noiId) => {
   try {
-    const userRef = doc(db, "favourites", userId);
-    await updateDoc(userRef, {
-      favouriteNois: arrayUnion(noiId),
+    await addDoc(collection(db, "favorites"), {
+      userId,
+      noiId,
     });
   } catch (error) {
-    console.error("Error adding favourite: ", error);
+    console.error("Error adding favorite: ", error);
     throw error;
-  }
-};
-
-// Remove a NOI from user's favourites
-export const removeFavourite = async (userId, noiId) => {
-  try {
-    const userRef = doc(db, "favourites", userId);
-    await updateDoc(userRef, {
-      favouriteNois: arrayRemove(noiId),
-    });
-  } catch (error) {
-    console.error("Error removing favourite: ", error);
-    throw error;
-  }
-};
-
-// Fetch user's favourite NOIs
-export const fetchFavourites = async (userId) => {
-  try {
-    const userRef = doc(db, "favourites", userId);
-    const docSnap = await getDoc(userRef);
-    if (docSnap.exists()) {
-      return docSnap.data().favouriteNois || [];
-    } else {
-      console.log("No favourites found for user.");
-      return [];
-    }
-  } catch (error) {
-    console.error("Error fetching favourites: ", error);
-    throw error;
-  }
-};
-
-// Toggle favorite status
-export const toggleFavoriteStatus = async (id, isFavorite) => {
-  try {
-    const docRef = doc(db, "nois", id);
-    await updateDoc(docRef, { isFavorite });
-  } catch (error) {
-    throw new Error("Error updating favorite status: " + error.message);
   }
 };
