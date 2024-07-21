@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Header from "../components/Header";
+import EmptyHeader from "../components/EmptyHeader";
 import Sidebar from "../components/Sidebar";
 import AggregateMap from "../components/AggregateMap"; // Update the import
 import { fetchNois } from "../../controllers/noisController";
@@ -39,7 +39,7 @@ const NOIMap = ({ user }) => {
     <div className="flex h-screen bg-gray-100">
       <Sidebar user={user} />
       <div className="flex-1 flex flex-col overflow-hidden md:ml-64 lg:ml-80">
-        <Header />
+        <EmptyHeader />
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200 relative">
           <div className="container mx-auto px-6 py-8 relative z-10">
             <div className="bg-white p-6 rounded-lg shadow-md relative z-10">

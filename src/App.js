@@ -7,16 +7,19 @@ import {
 } from "react-router-dom";
 import { auth } from "./firebase/firebase";
 import Login from "./views/Login";
-import Dashboard from "./views/components/Dashboard"; // Ensure Dashboard is correctly exported
-import Home from "./views/components/Home"; // Ensure Home is correctly exported
-import Cases from "./views/components/Cases"; // Ensure Cases is correctly exported
-import Reporting from "./views/components/Reporting"; // Ensure Reporting is correctly exported
+import Dashboard from "./views/components/Dashboard";
+import Home from "./views/components/Home";
+import Cases from "./views/components/Cases";
+import Reporting from "./views/components/Reporting";
 import NOICreate from "./views/NOI/NOICreate";
 import Notifications from "./views/components/Notifications";
 import Settings from "./views/components/Settings";
 import Users from "./views/components/Users";
 import NOIDetails from "./views/NOI/NOIDetails";
+import Favourites from "./views/components/Favourites";
 import NOIMap from "./views/components/NOIMap";
+import Documents from "./views/components/Documents";
+
 function App() {
   const [user, setUser] = React.useState(null);
 
@@ -48,12 +51,10 @@ function App() {
           path="/noidetails/:id"
           element={user ? <NOIDetails user={user} /> : <Navigate to="/login" />}
         />
-
         <Route
           path="/noimap"
           element={user ? <NOIMap user={user} /> : <Navigate to="/login" />}
         />
-
         <Route
           path="/reporting"
           element={user ? <Reporting user={user} /> : <Navigate to="/login" />}
@@ -62,6 +63,12 @@ function App() {
           path="/notifications"
           element={
             user ? <Notifications user={user} /> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          path="/documents"
+          element={
+            user ? <Documents user={user} /> : <Navigate to="/documents" />
           }
         />
         <Route
@@ -76,7 +83,14 @@ function App() {
           path="/create-noi"
           element={user ? <NOICreate user={user} /> : <Navigate to="/login" />}
         />
-        <Route path="/" element={<Navigate to={user ? "/home" : "/login"} />} />
+        <Route
+          path="/favourites"
+          element={user ? <Favourites user={user} /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/"
+          element={user ? <Navigate to="/home" /> : <Navigate to="/login" />}
+        />
       </Routes>
     </Router>
   );
