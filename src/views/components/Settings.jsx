@@ -63,7 +63,7 @@ const Settings = ({ user }) => {
           <div className="container mx-auto px-6 py-8">
             <div className="bg-white p-6 rounded-lg shadow-md">
               <Typography className="mx-auto text-center" variant="h4" gutterBottom>
-                Settings
+                My Settings
               </Typography>
               <form onSubmit={handleSaveChanges} className="space-y-4 lg:max-w-[60%] md-custom:max-w-[50%] w-full mx-auto">
                 <TextField

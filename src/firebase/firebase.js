@@ -12,7 +12,7 @@ import {
   orderBy,
   limit,
   writeBatch,
-} from "firebase/firestore"; // Import Firestore functions
+} from "firebase/firestore"; 
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -23,11 +23,10 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_APP_ID,
   measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const analytics = getAnalytics(app);
-const db = getFirestore(app); // Initialize Firestore
+const db = getFirestore(app); 
 
 export {
   auth,
@@ -41,4 +40,4 @@ export {
   orderBy,
   limit,
   writeBatch,
-}; // Export Firestore functions
+}; 

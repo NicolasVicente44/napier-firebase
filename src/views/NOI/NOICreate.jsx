@@ -6,15 +6,18 @@ import {
   MenuItem,
   List,
   ListItemText,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import EmptyHeader from "../components/EmptyHeader";
 import Sidebar from "../components/Sidebar";
 import { createNOI } from "../../controllers/noisController";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 
 // Function to get latitude and longitude from address using Map Maker Geocoding API
-async function getCoordinatesFromAddress(address) {
-  const apiKey = "669d4aca22579710523104lmr1e3e1f";
+export async function getCoordinatesFromAddress(address) {
+  const apiKey = process.env.LOCATION_API_KEY;
   try {
     const response = await fetch(
       `https://geocode.maps.co/search?q=${encodeURIComponent(
@@ -45,8 +48,8 @@ async function getCoordinatesFromAddress(address) {
 }
 
 // Function to get address suggestions (replace with actual API or data source)
-async function getAddressSuggestions(query) {
-  const apiKey = "669d4aca22579710523104lmr1e3e1f";
+export async function getAddressSuggestions(query) {
+  const apiKey = process.env.LOCATION_API_KEY;
   try {
     const response = await fetch(
       `https://geocode.maps.co/search?q=${encodeURIComponent(
@@ -74,10 +77,31 @@ async function getAddressSuggestions(query) {
 const NOICreate = ({ user }) => {
   const [formData, setFormData] = useState({
     clientName: "",
+    clientAddress: "",
+    assetYear: "",
     assetMake: "",
     assetModel: "",
-    dateNOISent: "",
+    assetColour: "",
+    VIN_serialNum: "",
+    licensePlate: "",
+    licenseExpiry: "",
+    registeredOwner: "",
+    lienHolder: "",
+    lienHolderCont: "",
+    daysOfStorage: "",
+    storageRate: "",
     amountOfArrears: "",
+    bailiffCosts: "",
+    towingCost: "",
+    storageCosts: "",
+    NOICosts: "",
+    HSTOnCosts: "",
+    formDate: "",
+    totalOfStorageRate: "",
+    dateOfAdditionalCharges: "",
+    repoDate: "",
+    dateNOISent: "",
+    registeredOwnerCont: "",
     location: "",
     locationDescription: "",
   });
@@ -86,6 +110,7 @@ const NOICreate = ({ user }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [vinError, setVinError] = useState("");
 
   const navigate = useNavigate();
   const suggestionsRef = useRef(null);
@@ -124,7 +149,10 @@ const NOICreate = ({ user }) => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (suggestionsRef.current && !suggestionsRef.current.contains(event.target)) {
+      if (
+        suggestionsRef.current &&
+        !suggestionsRef.current.contains(event.target)
+      ) {
         setSuggestions([]);
       }
     };
@@ -132,15 +160,20 @@ const NOICreate = ({ user }) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
-  };
 
+    // Validate VIN length
+    if (name === "VIN_serialNum" && value.length !== 17) {
+      setVinError("VIN/Serial Number must be exactly 17 characters.");
+    } else {
+      setVinError("");
+    }
+  };
   const handleAddressSelect = async (address) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -173,10 +206,32 @@ const NOICreate = ({ user }) => {
       // Clear form and navigate after successful submission
       setFormData({
         clientName: "",
+        clientAddress: "",
+        assetYear: "",
         assetMake: "",
         assetModel: "",
-        dateNOISent: "",
+        assetColour: "",
+        VIN_serialNum: "",
+        licensePlate: "",
+        licenseExpiry: "",
+        registeredOwner: "",
+        lienHolder: "",
+        lienHolderCont: "",
+        daysOfStorage: "",
+        storageRate: "",
         amountOfArrears: "",
+        bailiffCosts: "",
+        towingCost: "",
+        storageCosts: "",
+        NOICosts: "",
+        HSTOnCosts: "",
+        formDate: "",
+        totalOfStorageRate: "",
+        dateOfAdditionalCharges: "",
+        repoDate: "",
+        dateNOISent: "",
+        registeredOwnerCont: "",
+
         location: "",
         locationDescription: "",
       });
@@ -203,6 +258,7 @@ const NOICreate = ({ user }) => {
                 onSubmit={handleSubmit}
                 className="space-y-4 lg:max-w-[60%] md-custom:max-w-[50%] w-full mx-auto"
               >
+                <Typography variant="h5">Client Info</Typography>
                 <TextField
                   fullWidth
                   label="Client Name"
@@ -214,11 +270,27 @@ const NOICreate = ({ user }) => {
                 />
                 <TextField
                   fullWidth
+                  label="Client Address"
+                  name="clientAddress"
+                  value={formData.clientAddress}
+                  onChange={handleChange}
+                  variant="outlined"
+                />
+                <Typography variant="h5">Asset Info</Typography>
+                <TextField
+                  fullWidth
+                  label="Asset Year"
+                  name="assetYear"
+                  value={formData.assetYear}
+                  onChange={handleChange}
+                  variant="outlined"
+                />
+                <TextField
+                  fullWidth
                   label="Asset Make"
                   name="assetMake"
                   value={formData.assetMake}
                   onChange={handleChange}
-                  required
                   variant="outlined"
                 />
                 <TextField
@@ -227,18 +299,81 @@ const NOICreate = ({ user }) => {
                   name="assetModel"
                   value={formData.assetModel}
                   onChange={handleChange}
-                  required
                   variant="outlined"
                 />
                 <TextField
                   fullWidth
-                  label="Date NOI Sent"
-                  name="dateNOISent"
-                  type="date"
-                  value={formData.dateNOISent}
+                  label="Asset Colour"
+                  name="assetColour"
+                  value={formData.assetColour}
                   onChange={handleChange}
+                  variant="outlined"
+                />
+                <TextField
+                  fullWidth
                   required
-                  InputLabelProps={{ shrink: true }}
+                  label="VIN/Serial Number"
+                  name="VIN_serialNum"
+                  value={formData.VIN_serialNum}
+                  onChange={handleChange}
+                  variant="outlined"
+                  error={!!vinError}
+                  helperText={vinError}
+                />
+                <TextField
+                  fullWidth
+                  label="License Plate"
+                  name="licensePlate"
+                  value={formData.licensePlate}
+                  onChange={handleChange}
+                  variant="outlined"
+                />
+                <TextField
+                  fullWidth
+                  label="License Expiry"
+                  name="licenseExpiry"
+                  type="date"
+                  value={formData.licenseExpiry}
+                  onChange={handleChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="outlined"
+                />
+                <Typography variant="h5">Owner Info</Typography>
+                <TextField
+                  fullWidth
+                  label="Registered Owner"
+                  name="registeredOwner"
+                  value={formData.registeredOwner}
+                  onChange={handleChange}
+                  variant="outlined"
+                />
+                <TextField
+                  fullWidth
+                  label="Lien Holder"
+                  name="lienHolder"
+                  value={formData.lienHolder}
+                  onChange={handleChange}
+                  variant="outlined"
+                />
+                <Typography variant="h5">Costs Info</Typography>
+                <TextField
+                  fullWidth
+                  label="Days of Storage"
+                  name="daysOfStorage"
+                  type="number"
+                  value={formData.daysOfStorage}
+                  onChange={handleChange}
+                  variant="outlined"
+                />
+                <TextField
+                  fullWidth
+                  label="Storage Rate"
+                  name="storageRate"
+                  type="number"
+                  value={formData.storageRate}
+                  onChange={handleChange}
                   variant="outlined"
                 />
                 <TextField
@@ -248,64 +383,146 @@ const NOICreate = ({ user }) => {
                   type="number"
                   value={formData.amountOfArrears}
                   onChange={handleChange}
-                  required
                   variant="outlined"
                 />
-                <div className="relative">
-                  <TextField
-                    fullWidth
-                    label="Location (Address)"
-                    name="location"
-                    value={formData.location}
-                    onChange={handleChange}
-                    variant="outlined"
-                    error={!!error}
-                    helperText={isLoading ? "Fetching coordinates..." : error}
-                  />
-                  {/* Render suggestions below the location field */}
-                  {suggestions.length > 0 && (
-                    <List
-                      ref={suggestionsRef}
-                      sx={{
-                        border: "1px solid #ccc",
-                        borderRadius: "4px",
-                        marginTop: "2px",
-                        maxHeight: "150px",
-                        overflowY: "auto",
-                        backgroundColor: "#fff",
-                        zIndex: 1000,
-                        position: "absolute",
-                        top: "100%",
-                        left: 0,
-                        width: "100%",
-                      }}
-                    >
+                <TextField
+                  fullWidth
+                  label="Bailiff Costs"
+                  name="bailiffCosts"
+                  type="number"
+                  value={formData.bailiffCosts}
+                  onChange={handleChange}
+                  variant="outlined"
+                />
+                <TextField
+                  fullWidth
+                  label="Towing Cost"
+                  name="towingCost"
+                  type="number"
+                  value={formData.towingCost}
+                  onChange={handleChange}
+                  variant="outlined"
+                />
+                <TextField
+                  fullWidth
+                  label="Storage Costs"
+                  name="storageCosts"
+                  type="number"
+                  value={formData.storageCosts}
+                  onChange={handleChange}
+                  variant="outlined"
+                />
+                <TextField
+                  fullWidth
+                  label="NOI Costs"
+                  name="NOICosts"
+                  type="number"
+                  value={formData.NOICosts}
+                  onChange={handleChange}
+                  variant="outlined"
+                />
+                <TextField
+                  fullWidth
+                  label="HST on Costs"
+                  name="HSTOnCosts"
+                  type="number"
+                  value={formData.HSTOnCosts}
+                  onChange={handleChange}
+                  variant="outlined"
+                />
+                <Typography variant="h5">Date Info</Typography>
+                <TextField
+                  fullWidth
+                  label="Form Date"
+                  name="formDate"
+                  type="date"
+                  value={formData.formDate}
+                  onChange={handleChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="outlined"
+                />
+                <TextField
+                  fullWidth
+                  label="Total of Storage Rate"
+                  name="totalOfStorageRate"
+                  type="number"
+                  value={formData.totalOfStorageRate}
+                  onChange={handleChange}
+                  variant="outlined"
+                />
+                <TextField
+                  fullWidth
+                  label="Date of Additional Charges"
+                  name="dateOfAdditionalCharges"
+                  type="date"
+                  value={formData.dateOfAdditionalCharges}
+                  onChange={handleChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="outlined"
+                />
+                <TextField
+                  fullWidth
+                  label="Repo Date"
+                  name="repoDate"
+                  type="date"
+                  value={formData.repoDate}
+                  onChange={handleChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="outlined"
+                />
+                <TextField
+                  fullWidth
+                  label="Date NOI Sent"
+                  name="dateNOISent"
+                  type="date"
+                  value={formData.dateNOISent}
+                  onChange={handleChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="outlined"
+                />
+
+                <Typography variant="h5">Location Info</Typography>
+                <TextField
+                  fullWidth
+                  label="Location"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleChange}
+                  onFocus={() => setSuggestions([])} // Hide suggestions on focus
+                  onBlur={() => setSuggestions([])} // Hide suggestions on blur
+                  variant="outlined"
+                />
+                {suggestions.length > 0 && (
+                  <div
+                    ref={suggestionsRef}
+                    className=" mb-8 bg-white border border-gray-300 rounded mt-1"
+                  >
+                    <List>
                       {suggestions.map((suggestion, index) => (
                         <MenuItem
                           key={index}
                           onClick={() => handleAddressSelect(suggestion)}
                         >
-                          <ListItemText
-                            primary={
-                              suggestion.length > 20
-                                ? `${suggestion.substring(0, 20)}...`
-                                : suggestion
-                            }
-                          />
+                          <ListItemText primary={suggestion} />
                         </MenuItem>
                       ))}
                     </List>
-                  )}
-                </div>
+                  </div>
+                )}
                 <TextField
                   fullWidth
-                  label="NOI Location Description"
+                  label="Location Description"
                   name="locationDescription"
                   value={formData.locationDescription}
                   onChange={handleChange}
-                  required
-                  multiline
-                  rows={4}
                   variant="outlined"
                 />
                 <Button
@@ -313,11 +530,12 @@ const NOICreate = ({ user }) => {
                   variant="contained"
                   color="primary"
                   fullWidth
+                  disabled={!!vinError || formData.VIN_serialNum.length !== 17}
                 >
-                  Create NOI Case
+                  Submit
                 </Button>
                 {error && (
-                  <Typography color="error" variant="body2" align="center">
+                  <Typography color="error" className="mt-4 text-center">
                     {error}
                   </Typography>
                 )}

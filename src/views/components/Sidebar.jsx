@@ -13,7 +13,7 @@ const Sidebar = ({ user }) => {
     { name: "NOI Cases", path: "/cases", icon: "📁" },
     { name: "NOI Map", path: "/noimap", icon: "📍" },
     { name: "Reporting", path: "/reporting", icon: "📊" },
-    { name: "NOI Documents", path: "/documents", icon: "📄" },
+    { name: "Document Hub", path: "/documents", icon: "📄" },
     { name: "Notifications", path: "/notifications", icon: "🔔" },
     { name: "Favourites", path: "/favourites", icon: "⭐" },
   ];

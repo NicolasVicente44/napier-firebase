@@ -151,41 +151,149 @@ const NOIDetails = ({ user }) => {
                 </button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  {[
-                    "id",
-                    "clientName",
-                    "assetMake",
-                    "assetModel",
-                    "dateNOISent",
-                    "amountOfArrears",
-                  ].map((field) => (
-                    <div key={field}>
-                      <label className="text-lg mb-2 block font-semibold">
-                        {field
-                          .replace(/([A-Z])/g, " $1")
-                          .replace(/^./, (str) => str.toUpperCase())}
-                        :
-                      </label>
-                      <input
-                        type="text"
-                        name={field}
-                        value={noi[field] || "N/A"}
-                        onChange={handleInputChange}
-                        disabled={!isEdit}
-                        className="w-full p-2 border rounded"
-                      />
-                    </div>
-                  ))}
+                <div className="space-y-8">
+                  <div>
+                    {" "}
+                    <hr className="py-2" />
+                    <h2 className="text-2xl font-semibold mb-2">Client Info</h2>
+                    {[
+                      "clientName",
+                      "clientAddress",
+                      "registeredOwner",
+                      "lienHolder",
+                    ].map((field) => (
+                      <div key={field} className="mb-4">
+                        <label className="text-lg mb-2 block font-semibold">
+                          {field
+                            .replace(/([A-Z])/g, " $1")
+                            .replace(/^./, (str) => str.toUpperCase())}
+                          :
+                        </label>
+                        <input
+                          type="text"
+                          name={field}
+                          value={noi[field] || "N/A"}
+                          onChange={handleInputChange}
+                          disabled={!isEdit}
+                          className="w-full p-2 border rounded"
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                  <div>
+                    <hr className="py-2" />
+
+                    <h2 className="text-2xl font-semibold mb-2">Asset Info</h2>
+                    {[
+                      "assetYear",
+                      "assetMake",
+                      "assetModel",
+                      "assetColour",
+                      "VIN_serialNum",
+                      "licensePlate",
+                      "licenseExpiry",
+                    ].map((field) => (
+                      <div key={field} className="mb-4">
+                        <label className="text-lg mb-2 block font-semibold">
+                          {field
+                            .replace(/([A-Z])/g, " $1")
+                            .replace(/^./, (str) => str.toUpperCase())}
+                          :
+                        </label>
+                        <input
+                          type="text"
+                          name={field}
+                          value={noi[field] || "N/A"}
+                          onChange={handleInputChange}
+                          disabled={!isEdit}
+                          className="w-full p-2 border rounded"
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                  <div>
+                    <hr className="py-2" />
+                    <h2 className="text-2xl font-semibold mb-2">Costs</h2>
+                    {[
+                      "daysOfStorage",
+                      "storageRate",
+                      "amountOfArrears",
+                      "bailiffCosts",
+                      "towingCost",
+                      "storageCosts",
+                      "NOICosts",
+                      "HSTOnCosts",
+                      "totalOfStorageRate",
+                      "dateOfAdditionalCharges",
+                    ].map((field) => (
+                      <div key={field} className="mb-4">
+                        <label className="text-lg mb-2 block font-semibold">
+                          {field
+                            .replace(/([A-Z])/g, " $1")
+                            .replace(/^./, (str) => str.toUpperCase())}
+                          :
+                        </label>
+                        <input
+                          type="text"
+                          name={field}
+                          value={noi[field] || "N/A"}
+                          onChange={handleInputChange}
+                          disabled={!isEdit}
+                          className="w-full p-2 border rounded"
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                  <div>
+                    <hr className="py-2" />
+
+                    <h2 className="text-2xl font-semibold mb-2">Dates</h2>
+                    {["formDate", "repoDate", "dateNOISent"].map((field) => (
+                      <div key={field} className="mb-4">
+                        <label className="text-lg mb-2 block font-semibold">
+                          {field
+                            .replace(/([A-Z])/g, " $1")
+                            .replace(/^./, (str) => str.toUpperCase())}
+                          :
+                        </label>
+                        <input
+                          type="text"
+                          name={field}
+                          value={noi[field] || "N/A"}
+                          onChange={handleInputChange}
+                          disabled={!isEdit}
+                          className="w-full p-2 border rounded"
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
                 <div className="flex flex-col">
-                  <h2 className="text-xl font-semibold mb-4">
+                  <h2 className="text-2xl font-semibold mb-4">
                     Location/Mapping
                   </h2>
                   <div className="relative h-80 bg-gray-200 rounded-lg overflow-hidden z-0">
                     <Map location={noi.NOILocation} />
                   </div>
-                  {/* Add the Location Description below the map */}
+                  <div className="mt-4 p-4 bg-white border border-gray-300 rounded-lg shadow-sm">
+                    <h3 className="text-lg font-medium mb-2">
+                      Location Address
+                    </h3>
+                    {isEdit ? (
+                      <textarea
+                        name="location"
+                        value={noi.location || ""}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border rounded"
+                        rows="3"
+                      />
+                    ) : (
+                      <p>{noi.location || "No location address available"}</p>
+                    )}
+                  </div>
                   <div className="mt-4 p-4 bg-white border border-gray-300 rounded-lg shadow-sm">
                     <h3 className="text-lg font-medium mb-2">
                       Location Description

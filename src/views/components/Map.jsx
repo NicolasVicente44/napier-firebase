@@ -14,9 +14,8 @@ const defaultIcon = new L.Icon({
 L.Marker.prototype.options.icon = defaultIcon;
 
 const Map = ({ location }) => {
-// Check if the location data is valid
   const hasLocationData = location && location.latitude && location.longitude;
-
+  console.log(location);
   return (
     <div className="relative h-full w-full">
       {hasLocationData ? (

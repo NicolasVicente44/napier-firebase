@@ -297,17 +297,28 @@ const Cases = ({ user }) => {
                                   to={`/noidetails/${noi.id}`}
                                 >
                                   <TableCell>{noi.id || "N/A"}</TableCell>
-                                  <TableCell>{noi.clientName || "N/A"}</TableCell>
-                                  <TableCell>{noi.assetMake || "N/A"}</TableCell>
-                                  <TableCell>{noi.assetModel || "N/A"}</TableCell>
-                                  <TableCell>{noi.dateNOISent || "N/A"}</TableCell>
-                                  <TableCell>{noi.amountOfArrears || "N/A"}</TableCell>
+                                  <TableCell>
+                                    {noi.clientName || "N/A"}
+                                  </TableCell>
+                                  <TableCell>
+                                    {noi.assetMake || "N/A"}
+                                  </TableCell>
+                                  <TableCell>
+                                    {noi.assetModel || "N/A"}
+                                  </TableCell>
+                                  <TableCell>
+                                    {noi.dateNOISent || "N/A"}
+                                  </TableCell>
+                                  <TableCell>
+                                    {noi.amountOfArrears || "N/A"}
+                                  </TableCell>
                                 </TableRow>
                               ))
                             ) : (
                               <TableRow>
                                 <TableCell colSpan={6} className="text-center">
-                                  No NOIs found.
+                                  No NOIs found. Check internet connection or
+                                  try again.
                                 </TableCell>
                               </TableRow>
                             )}
@@ -335,34 +346,46 @@ const Cases = ({ user }) => {
                               </p>
                               <p className="flex items-center mb-2">
                                 <FaUser className="mr-2 text-green-500" />
-                                <span className="font-semibold">Client Name: </span>{" "}
+                                <span className="font-semibold">
+                                  Client Name:{" "}
+                                </span>{" "}
                                 {noi.clientName || "N/A"}
                               </p>
                               <p className="flex items-center mb-2">
                                 <FaCar className="mr-2 text-red-500" />
-                                <span className="font-semibold">Asset Make: </span>{" "}
+                                <span className="font-semibold">
+                                  Asset Make:{" "}
+                                </span>{" "}
                                 {noi.assetMake || "N/A"}
                               </p>
                               <p className="flex items-center mb-2">
                                 <FaCar className="mr-2 text-red-500" />
-                                <span className="font-semibold">Asset Model: </span>{" "}
+                                <span className="font-semibold">
+                                  Asset Model:{" "}
+                                </span>{" "}
                                 {noi.assetModel || "N/A"}
                               </p>
                               <p className="flex items-center mb-2">
                                 <FaCalendar className="mr-2 text-yellow-500" />
-                                <span className="font-semibold">Date NOI Sent: </span>{" "}
+                                <span className="font-semibold">
+                                  Date NOI Sent:{" "}
+                                </span>{" "}
                                 {noi.dateNOISent || "N/A"}
                               </p>
                               <p className="flex items-center mb-2">
                                 <FaMoneyBillWave className="mr-2 text-purple-500" />
-                                <span className="font-semibold">Amount of Arrears: </span>{" "}
+                                <span className="font-semibold">
+                                  Amount of Arrears:{" "}
+                                </span>{" "}
                                 {noi.amountOfArrears || "N/A"}
                               </p>
                             </div>
                           </Link>
                         ))
                       ) : (
-                        <p className="text-center col-span-full">No NOIs found.</p>
+                        <p className="text-center col-span-full">
+                          No NOIs found.
+                        </p>
                       )}
                     </div>
                   )}
