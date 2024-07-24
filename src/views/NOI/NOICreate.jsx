@@ -17,7 +17,7 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 
 // Function to get latitude and longitude from address using Map Maker Geocoding API
 export async function getCoordinatesFromAddress(address) {
-  const apiKey = process.env.LOCATION_API_KEY;
+  const apiKey = "669d4aca22579710523104lmr1e3e1f";
   try {
     const response = await fetch(
       `https://geocode.maps.co/search?q=${encodeURIComponent(
@@ -49,7 +49,7 @@ export async function getCoordinatesFromAddress(address) {
 
 // Function to get address suggestions (replace with actual API or data source)
 export async function getAddressSuggestions(query) {
-  const apiKey = process.env.LOCATION_API_KEY;
+  const apiKey = "669d4aca22579710523104lmr1e3e1f";
   try {
     const response = await fetch(
       `https://geocode.maps.co/search?q=${encodeURIComponent(

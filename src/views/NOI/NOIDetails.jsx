@@ -20,7 +20,11 @@ import Map from "../components/Map";
 import CircularProgress from "@mui/material/CircularProgress";
 import Modal from "react-modal";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
-
+import {
+  getCoordinatesFromAddress,
+  getAddressSuggestions,
+} from "../../views/NOI/NOICreate";
+import { PDFDocument } from "pdf-lib";
 const NOIDetails = ({ user }) => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -30,7 +34,57 @@ const NOIDetails = ({ user }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showCloseModal, setShowCloseModal] = useState(false);
   const [favorite, setFavorite] = useState(false);
+  const [showPdfModal, setShowPdfModal] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState(""); // State for the selected template
+  const applicationVariables = [
+    "clientName",
+    "clientAddress",
+    "registeredOwner",
+    "lienHolder",
+    "assetYear",
+    "assetMake",
+    "assetModel",
+    "assetColour",
+    "VIN_serialNum",
+    "licensePlate",
+    "licenseExpiry",
+    "daysOfStorage",
+    "storageRate",
+    "amountOfArrears",
+    "bailiffCosts",
+    "towingCost",
+    "storageCosts",
+    "NOICosts",
+    "totalOfStorageRate",
+    "dateOfAdditionalCharges",
+    "formDate",
+    "repoDate",
+    "dateNOISent",
+  ];
 
+  const [templates, setTemplates] = useState([
+    // Example templates; adjust as needed
+    {
+      name: "NOI Lien Only.pdf",
+      url: "https://firebasestorage.googleapis.com/v0/b/napier-firebase.appspot.com/o/NOI%20Lien%20Only.pdf?alt=media",
+    },
+    {
+      name: "NOI Retain Vehicle",
+      url: "https://firebasestorage.googleapis.com/v0/b/napier-firebase.appspot.com/o/NOI%20Retain%20Vehicle.pdf?alt=media",
+    },
+    {
+      name: "NOI Sell Vehicle",
+      url: "https://firebasestorage.googleapis.com/v0/b/napier-firebase.appspot.com/o/NOI%20Sell%20Vehicle.pdf?alt=media",
+    },
+    {
+      name: "NOI Sell Vessel",
+      url: "https://firebasestorage.googleapis.com/v0/b/napier-firebase.appspot.com/o/NOI%20Sell%20Vessel.pdf?alt=media",
+    },
+    {
+      name: "NOI Retain Vessel",
+      url: "https://firebasestorage.googleapis.com/v0/b/napier-firebase.appspot.com/o/NOI%20Retain%20Vessel.pdf?alt=media",
+    },
+  ]);
   useEffect(() => {
     const loadNoi = async () => {
       try {
@@ -46,6 +100,50 @@ const NOIDetails = ({ user }) => {
     };
     loadNoi();
   }, [id, user.uid]);
+  async function extractPdfFields(pdfBytes) {
+    const pdfDoc = await PDFDocument.load(pdfBytes);
+    const form = pdfDoc.getForm();
+    const fields = form.getFields();
+
+    const fieldData = {};
+    fields.forEach((field) => {
+      fieldData[field.getName()] = field.getValue();
+    });
+
+    return fieldData;
+  }
+  useEffect(() => {
+    if (selectedTemplate) {
+      handleGeneratePdf();
+    }
+  }, [selectedTemplate]);
+
+  async function extractPdfFields(pdfBytes) {
+    const pdfDoc = await PDFDocument.load(pdfBytes);
+    const form = pdfDoc.getForm();
+    const fields = form.getFields();
+
+    const fieldData = {};
+    fields.forEach((field) => {
+      fieldData[field.getName()] = field.getValue();
+    });
+
+    return fieldData;
+  }
+  const handleGeneratePdf = async () => {
+    if (selectedTemplate) {
+      try {
+        // Update Firestore with the selected template URL
+        await updateNoiById(id, { ...noi, pdfTemplate: selectedTemplate });
+        setShowPdfModal(true);
+      } catch (error) {
+        toast.error("Error updating NOI with selected template.");
+        console.error("Error updating NOI: ", error);
+      }
+    } else {
+      toast.error("Please select a PDF template first.");
+    }
+  };
 
   const handleSave = async () => {
     try {
@@ -120,6 +218,37 @@ const NOIDetails = ({ user }) => {
 
   return (
     <div className="flex h-screen bg-gray-100">
+      <Modal
+        isOpen={showPdfModal}
+        onRequestClose={() => setShowPdfModal(false)}
+        className="fixed inset-0 flex items-center justify-center z-50"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-75 z-40"
+      >
+        <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+          <h2 className="text-2xl font-bold mb-4">Generate PDF</h2>
+          <p>
+            Are you sure you want to generate a PDF with the selected template?
+          </p>
+          <div className="mt-6 flex justify-end space-x-4">
+            <button
+              onClick={() => setShowPdfModal(false)}
+              className="bg-gray-300 text-gray-800 px-4 py-2 rounded"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => {
+                // Add logic to generate PDF here
+                setShowPdfModal(false);
+              }}
+              className="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              Generate PDF
+            </button>
+          </div>
+        </div>
+      </Modal>
+
       <ToastContainer />
       <Sidebar user={user} />
       <div className="flex-1 flex flex-col overflow-hidden md:ml-64 lg:ml-80">
@@ -153,7 +282,27 @@ const NOIDetails = ({ user }) => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-8">
                   <div>
-                    {" "}
+                    {/* Template Selection Dropdown in the first column */}
+                    <div className="space-y-8">
+                      <div className="mb-6">
+                        <label className="text-lg mb-2 block font-semibold">
+                          Select PDF Template:
+                        </label>
+                        <select
+                          value={selectedTemplate}
+                          onChange={(e) => setSelectedTemplate(e.target.value)}
+                          className="w-full p-2 border rounded"
+                        >
+                          <option value="">Select a template</option>
+                          {templates.map((template) => (
+                            <option key={template.name} value={template.url}>
+                              {template.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+
                     <hr className="py-2" />
                     <h2 className="text-2xl font-semibold mb-2">Client Info</h2>
                     {[
@@ -224,7 +373,6 @@ const NOIDetails = ({ user }) => {
                       "towingCost",
                       "storageCosts",
                       "NOICosts",
-                      "HSTOnCosts",
                       "totalOfStorageRate",
                       "dateOfAdditionalCharges",
                     ].map((field) => (
