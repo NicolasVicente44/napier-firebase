@@ -25,6 +25,8 @@ import {
   getAddressSuggestions,
 } from "../../views/NOI/NOICreate";
 import { PDFDocument } from "pdf-lib";
+import { StandardFonts, rgb } from "pdf-lib";
+
 const NOIDetails = ({ user }) => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -37,8 +39,8 @@ const NOIDetails = ({ user }) => {
   const [showPdfModal, setShowPdfModal] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState(""); // State for the selected template
   const applicationVariables = [
-    "clientName",
-    "clientAddress",
+    "client",
+    "clientAndClientAddress",
     "registeredOwner",
     "lienHolder",
     "assetYear",
@@ -61,6 +63,13 @@ const NOIDetails = ({ user }) => {
     "repoDate",
     "dateNOISent",
   ];
+
+  // Remove automatic PDF generation
+  useEffect(() => {
+    if (selectedTemplate) {
+      setShowPdfModal(true); // Open the modal when a template is selected
+    }
+  }, [selectedTemplate]);
 
   const [templates, setTemplates] = useState([
     // Example templates; adjust as needed
@@ -112,33 +121,83 @@ const NOIDetails = ({ user }) => {
 
     return fieldData;
   }
-  useEffect(() => {
-    if (selectedTemplate) {
-      handleGeneratePdf();
-    }
-  }, [selectedTemplate]);
+async function extractPdfFields(pdfBytes) {
+  const pdfDoc = await PDFDocument.load(pdfBytes);
+  const form = pdfDoc.getForm();
+  const fields = form.getFields();
 
-  async function extractPdfFields(pdfBytes) {
-    const pdfDoc = await PDFDocument.load(pdfBytes);
-    const form = pdfDoc.getForm();
-    const fields = form.getFields();
+  // Log each field's name and value
+  fields.forEach((field) => {
+    const fieldName = field.getName();
+    const fieldValue = field.getValue();
+    console.log(`Field Name: ${fieldName}, Field Value: ${fieldValue}`);
+  });
 
-    const fieldData = {};
-    fields.forEach((field) => {
-      fieldData[field.getName()] = field.getValue();
-    });
+  // Optionally, return the field data
+  const fieldData = {};
+  fields.forEach((field) => {
+    fieldData[field.getName()] = field.getValue();
+  });
 
-    return fieldData;
-  }
+  return fieldData;
+}
+
   const handleGeneratePdf = async () => {
     if (selectedTemplate) {
       try {
-        // Update Firestore with the selected template URL
+        const response = await fetch(selectedTemplate);
+        const existingPdfBytes = await response.arrayBuffer();
+        const pdfDoc = await PDFDocument.load(existingPdfBytes);
+        const form = pdfDoc.getForm();
+        const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+        // Create a mapping of NOI fields to PDF fields
+        const fieldMapping = {
+          client: "client",
+          clientAndClientAddress: "clientAndClientAddress",
+          registeredOwner: "registeredOwner",
+          lienHolder: "lienHolder",
+          // Only map the concatenated assetDescription
+          assetDescription: "assetDescription",
+          // Other fields...
+        };
+
+        // Special handling for assetDescription
+        const assetDescription = `${noi.assetYear || ""} ${
+          noi.assetMake || ""
+        } ${noi.assetModel || ""} ${noi.assetColour || ""}`;
+        const assetDescField = form.getTextField("assetDescription");
+        if (assetDescField) {
+          assetDescField.setText(assetDescription);
+          assetDescField.updateAppearances(helveticaFont);
+        } else {
+          console.warn('Field "assetDescription" not found in PDF.');
+        }
+
+        // Iterate through the mapping and set PDF field values
+        for (const [noiField, pdfField] of Object.entries(fieldMapping)) {
+          if (noiField !== "assetDescription") {
+            const field = form.getTextField(pdfField);
+            if (field) {
+              field.setText(noi[noiField] || "");
+              field.updateAppearances(helveticaFont);
+            } else {
+              console.warn(`Field "${pdfField}" not found in PDF.`);
+            }
+          }
+        }
+
+        const pdfBytes = await pdfDoc.save();
+        const pdfBlob = new Blob([pdfBytes], { type: "application/pdf" });
+        const pdfUrl = URL.createObjectURL(pdfBlob);
+        window.open(pdfUrl);
+
         await updateNoiById(id, { ...noi, pdfTemplate: selectedTemplate });
-        setShowPdfModal(true);
+        setShowPdfModal(false);
+        toast.success("PDF generated successfully.");
       } catch (error) {
-        toast.error("Error updating NOI with selected template.");
-        console.error("Error updating NOI: ", error);
+        toast.error("Error generating PDF.");
+        console.error("Error generating PDF: ", error);
       }
     } else {
       toast.error("Please select a PDF template first.");
@@ -237,10 +296,7 @@ const NOIDetails = ({ user }) => {
               Cancel
             </button>
             <button
-              onClick={() => {
-                // Add logic to generate PDF here
-                setShowPdfModal(false);
-              }}
+              onClick={handleGeneratePdf}
               className="bg-blue-500 text-white px-4 py-2 rounded"
             >
               Generate PDF
@@ -306,8 +362,8 @@ const NOIDetails = ({ user }) => {
                     <hr className="py-2" />
                     <h2 className="text-2xl font-semibold mb-2">Client Info</h2>
                     {[
-                      "clientName",
-                      "clientAddress",
+                      "client",
+                      "clientAndClientAddress",
                       "registeredOwner",
                       "lienHolder",
                     ].map((field) => (

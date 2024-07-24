@@ -22,7 +22,6 @@ export const fetchNois = async () => {
     const querySnapshot = await getDocs(collection(db, "nois"));
     const nois = querySnapshot.docs.map((doc) => {
       const data = doc.data();
-      console.log("Fetched NOI data:", { id: doc.id, ...data });
       return { id: doc.id, ...data };
     });
     return nois;

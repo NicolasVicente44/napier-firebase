@@ -12,7 +12,7 @@ import {
   writeBatch,
 } from "../firebase/firebase"; // Adjust path
 
-const MAX_LOG_COUNT = 5; // Maximum number of logs to keep
+const MAX_LOG_COUNT = 1; // Maximum number of logs to keep
 
 // Manage log count by deleting oldest logs if exceeding the limit
 const manageLogCount = async () => {
@@ -25,23 +25,16 @@ const manageLogCount = async () => {
     );
     const querySnapshot = await getDocs(q);
 
-    console.log(`Found ${querySnapshot.size} logs`);
 
     if (querySnapshot.size > MAX_LOG_COUNT) {
-      console.log(
-        `Exceeding limit of ${MAX_LOG_COUNT} logs. Deleting oldest logs...`
-      );
+  
       const batch = writeBatch(db); // Use writeBatch
 
       querySnapshot.docs.forEach((doc) => {
-        console.log(`Scheduling deletion of log with ID: ${doc.id}`);
         batch.delete(doc.ref);
       });
 
       await batch.commit();
-      console.log("Old logs deleted successfully");
-    } else {
-      console.log("Log count is within the limit. No deletion needed.");
     }
   } catch (error) {
     console.error("Error managing log count: ", error);

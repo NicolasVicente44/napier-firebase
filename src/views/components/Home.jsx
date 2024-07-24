@@ -11,7 +11,6 @@ const Home = ({ user }) => {
     const loadActivities = async () => {
       try {
         const fetchedActivities = await fetchRecentActivity();
-        console.log("Activities loaded:", fetchedActivities); // Debugging line
         setActivities(fetchedActivities);
       } catch (error) {
         console.error("Error loading activities: ", error);

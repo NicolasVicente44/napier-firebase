@@ -76,8 +76,8 @@ export async function getAddressSuggestions(query) {
 
 const NOICreate = ({ user }) => {
   const [formData, setFormData] = useState({
-    clientName: "",
-    clientAddress: "",
+    client: "",
+    clientAndClientAddress: "",
     assetYear: "",
     assetMake: "",
     assetModel: "",
@@ -205,8 +205,8 @@ const NOICreate = ({ user }) => {
 
       // Clear form and navigate after successful submission
       setFormData({
-        clientName: "",
-        clientAddress: "",
+        client: "",
+        clientAndClientAddress: "",
         assetYear: "",
         assetMake: "",
         assetModel: "",
@@ -262,8 +262,8 @@ const NOICreate = ({ user }) => {
                 <TextField
                   fullWidth
                   label="Client Name"
-                  name="clientName"
-                  value={formData.clientName}
+                  name="client"
+                  value={formData.client}
                   onChange={handleChange}
                   required
                   variant="outlined"
@@ -271,8 +271,8 @@ const NOICreate = ({ user }) => {
                 <TextField
                   fullWidth
                   label="Client Address"
-                  name="clientAddress"
-                  value={formData.clientAddress}
+                  name="clientAndClientAddress"
+                  value={formData.clientAndClientAddress}
                   onChange={handleChange}
                   variant="outlined"
                 />
