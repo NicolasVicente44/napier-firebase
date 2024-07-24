@@ -47,7 +47,7 @@ const NOIDetails = ({ user }) => {
     "assetMake",
     "assetModel",
     "assetColour",
-    "VIN_serialNum",
+    "VIN/serialNum",
     "licensePlate",
     "licenseExpiry",
     "daysOfStorage",
@@ -121,26 +121,26 @@ const NOIDetails = ({ user }) => {
 
     return fieldData;
   }
-async function extractPdfFields(pdfBytes) {
-  const pdfDoc = await PDFDocument.load(pdfBytes);
-  const form = pdfDoc.getForm();
-  const fields = form.getFields();
+  async function extractPdfFields(pdfBytes) {
+    const pdfDoc = await PDFDocument.load(pdfBytes);
+    const form = pdfDoc.getForm();
+    const fields = form.getFields();
 
-  // Log each field's name and value
-  fields.forEach((field) => {
-    const fieldName = field.getName();
-    const fieldValue = field.getValue();
-    console.log(`Field Name: ${fieldName}, Field Value: ${fieldValue}`);
-  });
+    // Log each field's name and value
+    fields.forEach((field) => {
+      const fieldName = field.getName();
+      const fieldValue = field.getValue();
+      console.log(`Field Name: ${fieldName}, Field Value: ${fieldValue}`);
+    });
 
-  // Optionally, return the field data
-  const fieldData = {};
-  fields.forEach((field) => {
-    fieldData[field.getName()] = field.getValue();
-  });
+    // Optionally, return the field data
+    const fieldData = {};
+    fields.forEach((field) => {
+      fieldData[field.getName()] = field.getValue();
+    });
 
-  return fieldData;
-}
+    return fieldData;
+  }
 
   const handleGeneratePdf = async () => {
     if (selectedTemplate) {
@@ -159,7 +159,21 @@ async function extractPdfFields(pdfBytes) {
           lienHolder: "lienHolder",
           // Only map the concatenated assetDescription
           assetDescription: "assetDescription",
-          // Other fields...
+          VIN_serialNum: "VIN/serialNum",
+          licensePlate: "licensePlate",
+          licenseExpiry: "licenseExpiry",
+          daysOfStorage: "daysOfStorage",
+          storageRate: "storageRate",
+          amountOfArrears: "amountOfArrears",
+          bailiffCosts: "bailiffCosts",
+          towingCost: "towingCost",
+          storageCosts: "storageCosts",
+          NOICosts: "NOICosts",
+          totalOfStorageRate: "totalOfStorageRate",
+          dateOfAdditionalCharges: "dateOfAdditionalCharges",
+          formDate: "formDate",
+          repoDate: "repoDate",
+          dateNOISent: "dateNOISent",
         };
 
         // Special handling for assetDescription
@@ -173,6 +187,24 @@ async function extractPdfFields(pdfBytes) {
         } else {
           console.warn('Field "assetDescription" not found in PDF.');
         }
+
+        const clientAndClientAddress = `${noi.client || ""} ${
+          noi.clientAndClientAddress || ""
+        }`;
+        const clientAndClientAddressField = form.getTextField(
+          "clientAndClientAddress"
+        );
+        if (clientAndClientAddressField) {
+          clientAndClientAddressField.setText(clientAndClientAddress);
+          clientAndClientAddressField.updateAppearances(helveticaFont);
+        } else {
+          console.warn("field client and client address not found");
+        }
+        const fields = form.getFields();
+
+        fields.forEach((field) => {
+          console.log(`Field Name: ${field.getName()}`);
+        });
 
         // Iterate through the mapping and set PDF field values
         for (const [noiField, pdfField] of Object.entries(fieldMapping)) {
@@ -395,7 +427,7 @@ async function extractPdfFields(pdfBytes) {
                       "assetMake",
                       "assetModel",
                       "assetColour",
-                      "VIN_serialNum",
+                      "VIN/serialNum",
                       "licensePlate",
                       "licenseExpiry",
                     ].map((field) => (

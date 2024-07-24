@@ -168,7 +168,7 @@ const NOICreate = ({ user }) => {
     }));
 
     // Validate VIN length
-    if (name === "VIN_serialNum" && value.length !== 17) {
+    if (name === "VIN/serialNum" && value.length !== 17) {
       setVinError("VIN/Serial Number must be exactly 17 characters.");
     } else {
       setVinError("");
@@ -313,7 +313,7 @@ const NOICreate = ({ user }) => {
                   fullWidth
                   required
                   label="VIN/Serial Number"
-                  name="VIN_serialNum"
+                  name="VIN/serialNum"
                   value={formData.VIN_serialNum}
                   onChange={handleChange}
                   variant="outlined"
