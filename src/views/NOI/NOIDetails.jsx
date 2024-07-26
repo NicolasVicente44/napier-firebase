@@ -491,7 +491,7 @@ const NOIDetails = ({ user }) => {
                     <h2 className="text-2xl font-semibold mb-2">Dates</h2>
                     {["formDate", "repoDate", "dateNOISent"].map((field) => (
                       <div key={field} className="mb-4">
-                        <label className="text-lg mb-2 block font-semibold">
+                      <label className="text-lg mb-2 block font-semibold">
                           {field
                             .replace(/([A-Z])/g, " $1")
                             .replace(/^./, (str) => str.toUpperCase())}
