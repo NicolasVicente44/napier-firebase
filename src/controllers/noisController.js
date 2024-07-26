@@ -63,6 +63,7 @@ export async function createNOI(data) {
     throw e;
   }
 }
+
 // Update an existing NOI
 export const updateNoiById = async (id, data) => {
   try {

@@ -4,6 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import EmptyHeader from "../components/EmptyHeader";
 import Sidebar from "../components/Sidebar";
+import NOIFileUpload from "../NOI/NOIFileUpload";
 import {
   fetchNoiById,
   updateNoiById,
@@ -26,6 +27,7 @@ import {
 } from "../../views/NOI/NOICreate";
 import { PDFDocument } from "pdf-lib";
 import { StandardFonts, rgb } from "pdf-lib";
+import ShareButton from "../components/ShareButton";
 
 const NOIDetails = ({ user }) => {
   const { id } = useParams();
@@ -548,13 +550,15 @@ const NOIDetails = ({ user }) => {
                       </p>
                     )}
                   </div>
+                  <NOIFileUpload caseId={noi.id} />
+                  <ShareButton link={noi.link} />
                 </div>
               </div>
               <div className="flex justify-end mt-6 space-x-4">
                 {!isEdit ? (
                   <button
                     onClick={() => setIsEdit(true)}
-                    className="bg-blue-500 text-white px-4 py-2 rounded"
+                    className="bg-[#007bff] text-white px-4 py-2 rounded"
                   >
                     Edit
                   </button>

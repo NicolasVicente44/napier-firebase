@@ -492,7 +492,7 @@ const NOICreate = ({ user }) => {
                 <Typography variant="h5">Location Info</Typography>
                 <TextField
                   fullWidth
-                  label="Location"
+                  label="Address"
                   name="location"
                   value={formData.location}
                   onChange={handleChange}
@@ -519,7 +519,7 @@ const NOICreate = ({ user }) => {
                 )}
                 <TextField
                   fullWidth
-                  label="Location Description"
+                  label="Address Description"
                   name="locationDescription"
                   value={formData.locationDescription}
                   onChange={handleChange}
