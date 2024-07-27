@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { storage, db } from "../../firebase/firebase";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, deleteObject } from "firebase/storage";
 import { TrashIcon } from "@heroicons/react/24/solid"; // Updated import path
 
@@ -10,15 +10,18 @@ const FileDisplay = ({ caseId }) => {
   const [fileUrl, setFileUrl] = useState(null);
 
   useEffect(() => {
-    const fetchFiles = async () => {
-      const noiRef = doc(db, "nois", caseId);
-      const noiDoc = await getDoc(noiRef);
-      if (noiDoc.exists()) {
-        setFiles(noiDoc.data().files || []);
-      }
-    };
+    // Create a reference to the Firestore document
+    const noiRef = doc(db, "nois", caseId);
 
-    fetchFiles();
+    // Set up the real-time listener
+    const unsubscribe = onSnapshot(noiRef, (doc) => {
+      if (doc.exists()) {
+        setFiles(doc.data().files || []);
+      }
+    });
+
+    // Cleanup the listener on component unmount or caseId change
+    return () => unsubscribe();
   }, [caseId]);
 
   const handleFileClick = async (file) => {
@@ -36,14 +39,10 @@ const FileDisplay = ({ caseId }) => {
 
       // Update Firestore to remove the file reference
       const noiRef = doc(db, "nois", caseId);
-      const noiDoc = await getDoc(noiRef);
-      const updatedFiles = (noiDoc.data().files || []).filter(
-        (f) => f !== file
-      );
+      const updatedFiles = (files || []).filter((f) => f !== file);
       await updateDoc(noiRef, { files: updatedFiles });
 
-      // Update local state
-      setFiles(updatedFiles);
+      // No need to manually update local state; Firestore listener will handle it
       if (selectedFile === file) {
         setSelectedFile(null);
         setFileUrl(null);
