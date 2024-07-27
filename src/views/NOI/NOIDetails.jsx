@@ -28,7 +28,7 @@ import {
 import { PDFDocument } from "pdf-lib";
 import { StandardFonts, rgb } from "pdf-lib";
 import ShareButton from "../components/ShareButton";
-
+import ScrollFABs from "../components/ScrollFABs";
 const NOIDetails = ({ user }) => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -311,6 +311,8 @@ const NOIDetails = ({ user }) => {
 
   return (
     <div className="flex h-screen bg-gray-100">
+      <ScrollFABs />
+
       <Modal
         isOpen={showPdfModal}
         onRequestClose={() => setShowPdfModal(false)}
@@ -375,8 +377,10 @@ const NOIDetails = ({ user }) => {
                     {/* Template Selection Dropdown in the first column */}
                     <div className="space-y-8">
                       <div className="mb-6">
+                        <ShareButton link={noi.link} />
+
                         <label className="text-lg mb-2 block font-semibold">
-                          Select PDF Template:
+                          Generate PDF:
                         </label>
                         <select
                           value={selectedTemplate}
@@ -491,7 +495,7 @@ const NOIDetails = ({ user }) => {
                     <h2 className="text-2xl font-semibold mb-2">Dates</h2>
                     {["formDate", "repoDate", "dateNOISent"].map((field) => (
                       <div key={field} className="mb-4">
-                      <label className="text-lg mb-2 block font-semibold">
+                        <label className="text-lg mb-2 block font-semibold">
                           {field
                             .replace(/([A-Z])/g, " $1")
                             .replace(/^./, (str) => str.toUpperCase())}
@@ -550,8 +554,7 @@ const NOIDetails = ({ user }) => {
                       </p>
                     )}
                   </div>
-                  <NOIFileUpload caseId={noi.id} />
-                  <ShareButton link={noi.link} />
+                  <NOIFileUpload caseId={id} />
                 </div>
               </div>
               <div className="flex justify-end mt-6 space-x-4">

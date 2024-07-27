@@ -41,46 +41,7 @@ const Header = ({ onSearch, onCreate, onFilter }) => {
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <FaSearch className="text-gray-500" />
           </div>
-          <button
-            onClick={handleFilterToggle}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500"
-          >
-            <FaFilter className="text-gray-500" />
-            {isDropdownOpen && (
-              <div className="absolute right-0 mt-12 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-10">
-                <div
-                  onClick={() => handleFilterChange("All")}
-                  className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                >
-                  All
-                </div>
-                <div
-                  onClick={() => handleFilterChange("Open Duration")}
-                  className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                >
-                  Open Duration
-                </div>
-                <div
-                  onClick={() => handleFilterChange("Value")}
-                  className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                >
-                  Value
-                </div>
-                <div
-                  onClick={() => handleFilterChange("Client Name")}
-                  className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                >
-                  Client Name
-                </div>
-                <div
-                  onClick={() => handleFilterChange("Asset Name")}
-                  className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                >
-                  Asset Name
-                </div>
-              </div>
-            )}
-          </button>
+       
         </div>
         <button
           onClick={handleCreateClick}

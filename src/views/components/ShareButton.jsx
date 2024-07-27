@@ -61,13 +61,14 @@ const closeButtonStyles = {
 const shareButtonStyles = {
   display: "flex",
   alignItems: "center",
-  padding: "10px 15px",
+  padding: "5px 10px",
   border: "none",
   backgroundColor: "#007bff", // Blue background
   color: "#fff",
   borderRadius: "5px",
   fontSize: "16px",
   cursor: "pointer",
+  marginBottom: "10px",
 };
 
 const shareIconStyles = {
@@ -111,12 +112,12 @@ const ShareButton = () => {
         <button style={closeButtonStyles} onClick={closeModal}>
           <i className="fas fa-times"></i>
         </button>
-        <h2>Sharable Link</h2>
-        <div style={{ position: "relative" }}> {/* Ensure this container is relatively positioned */}
+        <h2>Click To Copy Link</h2>
+        <div style={{ position: "relative" }}>
+          {" "}
+          {/* Ensure this container is relatively positioned */}
           {notificationVisible && (
-            <div style={notificationStyles}>
-              Link copied to clipboard!
-            </div>
+            <div style={notificationStyles}>Link copied to clipboard!</div>
           )}
           <input
             type="text"
