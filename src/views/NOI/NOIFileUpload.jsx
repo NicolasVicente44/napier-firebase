@@ -46,10 +46,10 @@ const NOIFileUpload = ({ caseId }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-8 p-4 border-2 border-dashed border-gray-300 rounded-md">
+    <div className="  mt-8 py-4 p-4 border-2 border-dashed border-gray-300 rounded-md">
       <div
         {...getRootProps()}
-        className={`p-4 border-2 border-dashed rounded-md cursor-pointer transition-colors ${
+        className={`p-4 border-2 border-dashed rounded-md cursor-pointer transition-colors py-12 ${
           isDragActive
             ? "border-blue-500 bg-blue-100"
             : "border-gray-300 bg-white"

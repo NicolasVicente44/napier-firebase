@@ -29,6 +29,7 @@ import { PDFDocument } from "pdf-lib";
 import { StandardFonts, rgb } from "pdf-lib";
 import ShareButton from "../components/ShareButton";
 import ScrollFABs from "../components/ScrollFABs";
+import FileDisplay from "../components/FileDisplay";
 const NOIDetails = ({ user }) => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -555,6 +556,7 @@ const NOIDetails = ({ user }) => {
                     )}
                   </div>
                   <NOIFileUpload caseId={id} />
+                  <FileDisplay caseId={id} />
                 </div>
               </div>
               <div className="flex justify-end mt-6 space-x-4">
