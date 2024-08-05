@@ -80,6 +80,7 @@ const Favorites = ({ user }) => {
                       >
                         NOI ID: {noiId}
                       </Link>
+                      <p>NOI COLLATERAL: {}</p>
                       <button
                         onClick={() => handleRemoveFavorite(noiId)}
                         className="bg-red-500 text-white px-4 py-2 rounded"

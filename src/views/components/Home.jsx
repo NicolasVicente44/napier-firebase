@@ -72,11 +72,14 @@ const Home = ({ user }) => {
                   {activities.length > 0 ? (
                     <ul className="space-y-2">
                       {activities.map((activity) => (
-                        <li key={activity.id} className="text-gray-700">
+                        <li
+                          key={activity.timestamp.toMillis()}
+                          className="text-gray-700"
+                        >
                           <p className="font-semibold">
-                            {activity.activityType}
+                            {activity.description}{" "}
+                            {/* Display the detailed description */}
                           </p>
-                          <p>{activity.details}</p>
                           <p className="text-sm text-gray-500">
                             {new Date(
                               activity.timestamp.seconds * 1000

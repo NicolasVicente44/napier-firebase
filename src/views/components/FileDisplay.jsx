@@ -91,14 +91,17 @@ const FileDisplay = ({ caseId }) => {
             >
               Download
             </a>
-            {selectedFile.endsWith(".pdf") ? (
+            {selectedFile ? (
               <iframe src={fileUrl} className="w-full h-96" />
             ) : (
-              <img
-                src={fileUrl}
-                alt={getFileName(fileUrl)}
-                className="w-full h-96 object-cover"
-              />
+                <div className="relative w-full h-0 pb-[56.25%] overflow-hidden">
+                <img
+                  src="your-image-url.jpg"
+                  alt="Description"
+                  className="absolute top-0 left-0 w-full h-full object-contain"
+                />
+              </div>
+              
             )}
           </div>
         )}

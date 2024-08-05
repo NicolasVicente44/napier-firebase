@@ -3,6 +3,7 @@ import { useDropzone } from "react-dropzone";
 import { storage, db } from "../../firebase/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { ToastContainer, toast } from "react-toastify";
 
 const NOIFileUpload = ({ caseId }) => {
   const [files, setFiles] = useState([]);
@@ -39,9 +40,10 @@ const NOIFileUpload = ({ caseId }) => {
 
       setFiles([]);
       setError(null);
-      alert("Files uploaded successfully!");
+      toast.success("Files uploaded successfully!");
     } catch (err) {
       setError("Failed to upload files.");
+      toast.error("Failed to upload files.");
     }
   };
 

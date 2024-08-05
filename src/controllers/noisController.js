@@ -1,5 +1,3 @@
-// noisController.js
-
 import { db } from "../firebase/firebase"; // Ensure Firebase is properly configured and exported
 import {
   collection,
@@ -9,12 +7,8 @@ import {
   updateDoc,
   deleteDoc,
   addDoc,
-  arrayUnion,
-  arrayRemove,
-  query,
-  where,
-  FieldPath,
 } from "firebase/firestore";
+import { logCRUDActivity } from "../controllers/activityController";
 
 // Fetch all NOIs
 export const fetchNois = async () => {
@@ -24,6 +18,9 @@ export const fetchNois = async () => {
       const data = doc.data();
       return { id: doc.id, ...data };
     });
+
+
+
     return nois;
   } catch (error) {
     console.error("Error fetching NOIs: ", error);
@@ -37,6 +34,7 @@ export const fetchNoiById = async (id) => {
     const docRef = doc(db, "nois", id);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
+
       return { id: docSnap.id, ...docSnap.data() };
     } else {
       console.log("No such document!");
@@ -48,27 +46,35 @@ export const fetchNoiById = async (id) => {
   }
 };
 
-// noisController.js
-export async function createNOI(data) {
+// Create a new NOI
+export const createNOI = async (data) => {
   try {
+    console.log("Data to be saved:", data); // Log the data
     const docRef = await addDoc(collection(db, "nois"), {
       ...data,
       createdAt: new Date(),
       closed: false,
     });
     console.log("Document written with ID:", docRef.id);
+
+    // Log activity for creating an NOI
+    await logCRUDActivity("create", "nois", docRef.id);
+
     return docRef.id;
   } catch (e) {
     console.error("Error adding document:", e);
     throw e;
   }
-}
+};
 
 // Update an existing NOI
 export const updateNoiById = async (id, data) => {
   try {
     const docRef = doc(db, "nois", id);
     await updateDoc(docRef, data);
+
+    // Log activity for updating an NOI
+    await logCRUDActivity("update", "nois", id);
   } catch (error) {
     console.error("Error updating NOI: ", error);
     throw error;
@@ -80,6 +86,9 @@ export const deleteNoiById = async (id) => {
   try {
     const docRef = doc(db, "nois", id);
     await deleteDoc(docRef);
+
+    // Log activity for deleting an NOI
+    await logCRUDActivity("delete", "nois", id);
   } catch (error) {
     console.error("Error deleting NOI: ", error);
     throw error;
@@ -91,6 +100,9 @@ export const closeNoiById = async (id) => {
   try {
     const docRef = doc(db, "nois", id);
     await updateDoc(docRef, { closed: true });
+
+    // Log activity for closing an NOI
+    await logCRUDActivity("update", "nois", id);
   } catch (error) {
     console.error("Error closing NOI case: ", error);
     throw error;
@@ -102,10 +114,11 @@ export const reopenNoiById = async (id) => {
   try {
     const docRef = doc(db, "nois", id);
     await updateDoc(docRef, { closed: false });
+
+    // Log activity for reopening an NOI
+    await logCRUDActivity("update", "nois", id);
   } catch (error) {
     console.error("Error reopening NOI case: ", error);
     throw error;
   }
 };
-
-// Add a favorite NOI for a user

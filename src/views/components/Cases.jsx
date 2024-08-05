@@ -297,9 +297,7 @@ const Cases = ({ user }) => {
                                   to={`/noidetails/${noi.id}`}
                                 >
                                   <TableCell>{noi.id || "N/A"}</TableCell>
-                                  <TableCell>
-                                    {noi.clientName || "N/A"}
-                                  </TableCell>
+                                  <TableCell>{noi.client || "N/A"}</TableCell>
                                   <TableCell>
                                     {noi.assetMake || "N/A"}
                                   </TableCell>
