@@ -12,9 +12,9 @@ import {
   orderBy,
   limit,
   writeBatch,
-  deleteDoc, // Import deleteDoc
-  doc, // Import doc
-  updateDoc, // Import updateDoc
+  deleteDoc,
+  doc,
+  updateDoc,
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
@@ -47,7 +47,7 @@ export {
   orderBy,
   limit,
   writeBatch,
-  deleteDoc, // Export deleteDoc
-  doc, // Export doc
-  updateDoc, // Export updateDoc
+  deleteDoc,
+  doc,
+  updateDoc,
 };

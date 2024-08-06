@@ -20,6 +20,7 @@ import NOIDetails from "./views/NOI/NOIDetails";
 import Favourites from "./views/components/Favorites";
 import NOIMap from "./views/components/NOIMap";
 import Documents from "./views/components/Documents";
+import BugReportFAB from "./views/components/BugReportFAB"; // Import the FAB component
 
 // Component to track and store the last visited path
 const LocationWatcher = ({ children }) => {
@@ -119,6 +120,7 @@ function App() {
           />
           <Route path="/" element={<Navigate to={getDefaultPath()} />} />
         </Routes>
+        {user && <BugReportFAB />} {/* Render FAB only if user is logged in */}
       </LocationWatcher>
     </Router>
   );
