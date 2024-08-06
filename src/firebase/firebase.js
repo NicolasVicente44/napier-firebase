@@ -12,8 +12,11 @@ import {
   orderBy,
   limit,
   writeBatch,
+  deleteDoc, // Import deleteDoc
+  doc, // Import doc
+  updateDoc, // Import updateDoc
 } from "firebase/firestore";
-import { getStorage } from "firebase/storage"; // Import getStorage from firebase/storage
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -29,12 +32,12 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
-const storage = getStorage(app); // Initialize Firebase Storage
+const storage = getStorage(app);
 
 export {
   auth,
   db,
-  storage, // Export storage
+  storage,
   Timestamp,
   collection,
   addDoc,
@@ -44,4 +47,7 @@ export {
   orderBy,
   limit,
   writeBatch,
+  deleteDoc, // Export deleteDoc
+  doc, // Export doc
+  updateDoc, // Export updateDoc
 };

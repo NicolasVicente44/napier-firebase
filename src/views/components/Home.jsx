@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import EmptyHeader from "../components/EmptyHeader";
 import Sidebar from "../components/Sidebar";
-import { fetchRecentActivity } from "../../controllers/activityController"; // Ensure the import path is correct
+import { fetchRecentActivity } from "../../controllers/activityController";
+import {
+  fetchLinks,
+  addLink,
+  deleteLink,
+} from "../../controllers/linkController";
+import Modal from "../components/Modal";
 
 const Home = ({ user }) => {
   const [activities, setActivities] = useState([]);
+  const [links, setLinks] = useState([]);
+  const [newAlias, setNewAlias] = useState("");
+  const [newUrl, setNewUrl] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const loadActivities = async () => {
@@ -16,8 +25,45 @@ const Home = ({ user }) => {
         console.error("Error loading activities: ", error);
       }
     };
+
+    const loadLinks = async () => {
+      try {
+        const fetchedLinks = await fetchLinks();
+        setLinks(fetchedLinks);
+      } catch (error) {
+        console.error("Error loading links: ", error);
+      }
+    };
+
     loadActivities();
+    loadLinks();
   }, []);
+
+  const handleAddLink = async () => {
+    try {
+      // Ensure the URL starts with http:// or https://
+      const url =
+        newUrl.startsWith("http://") || newUrl.startsWith("https://")
+          ? newUrl
+          : `http://${newUrl}`;
+      const newLink = await addLink(newAlias, url);
+      setLinks([...links, newLink]);
+      setNewAlias("");
+      setNewUrl("");
+      setIsModalOpen(false); // Close the modal after adding the link
+    } catch (error) {
+      console.error("Error adding link: ", error);
+    }
+  };
+
+  const handleDeleteLink = async (id) => {
+    try {
+      await deleteLink(id);
+      setLinks(links.filter((link) => link.id !== id));
+    } catch (error) {
+      console.error("Error deleting link: ", error);
+    }
+  };
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -37,32 +83,37 @@ const Home = ({ user }) => {
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-blue-100 min-h-80 p-4 rounded-lg shadow-sm">
-                  <h2 className="text-xl font-semibold mb-2">Quick Links</h2>
+                  <div className="flex justify-between items-center mb-2">
+                    <h2 className="text-xl font-semibold">Custom Quick Links</h2>
+                    <button
+                      onClick={() => setIsModalOpen(true)}
+                      className="bg-blue-600 text-white px-2 py-1 rounded"
+                    >
+                      Add Link
+                    </button>
+                  </div>
                   <ul>
-                    <li>
-                      <Link
-                        to="/cases"
-                        className="text-blue-600 hover:underline"
+                    {links.map((link) => (
+                      <li
+                        key={link.id}
+                        className="flex justify-between items-center"
                       >
-                        View NOIs
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to="/reporting"
-                        className="text-blue-600 hover:underline"
-                      >
-                        View Reports
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to="/settings"
-                        className="text-blue-600 hover:underline"
-                      >
-                        Settings
-                      </Link>
-                    </li>
+                        <a
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline"
+                        >
+                          {link.alias}
+                        </a>
+                        <button
+                          onClick={() => handleDeleteLink(link.id)}
+                          className="text-red-600 hover:underline ml-4"
+                        >
+                          x
+                        </button>
+                      </li>
+                    ))}
                   </ul>
                 </div>
                 <div className="bg-yellow-100 p-4 rounded-lg shadow-sm">
@@ -77,8 +128,7 @@ const Home = ({ user }) => {
                           className="text-gray-700"
                         >
                           <p className="font-semibold">
-                            {activity.description}{" "}
-                            {/* Display the detailed description */}
+                            {activity.description}
                           </p>
                           <p className="text-sm text-gray-500">
                             {new Date(
@@ -107,6 +157,34 @@ const Home = ({ user }) => {
           </div>
         </main>
       </div>
+
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <h2 className="text-xl font-semibold mb-4">Add a New Link</h2>
+        <div className="mb-4">
+          <input
+            type="text"
+            placeholder="Alias"
+            value={newAlias}
+            onChange={(e) => setNewAlias(e.target.value)}
+            className="w-full p-2 border rounded mb-2"
+          />
+          <input
+            type="text"
+            placeholder="URL"
+            value={newUrl}
+            onChange={(e) => setNewUrl(e.target.value)}
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        <div className="flex justify-end">
+          <button
+            onClick={handleAddLink}
+            className="bg-blue-600 text-white px-4 py-2 rounded"
+          >
+            Add Link
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };
