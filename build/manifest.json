@@ -1,0 +1,9 @@
+{
+  "short_name": "Napier NOI Flow",
+  "name": "Napier NOI Flow",
+ 
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
