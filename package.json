@@ -43,7 +43,7 @@
     "styled-components": "^6.1.12",
     "web-vitals": "^2.1.4"
   },
-"homepage": "https://nicolasvicente44.github.io/napier-firebase",
+  "homepage": "https://nicolasvicente44.github.io/napier-firebase",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -71,6 +71,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "gh-pages": "^6.1.1",
     "tailwindcss": "^3.4.6"
   }
