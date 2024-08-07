@@ -1,6 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-
 # misc
 .DS_Store
 .env
@@ -18,7 +17,7 @@
 /coverage
 
 # production
-/build
+# /build  # Comment out or remove this line
 
 # misc
 .DS_Store
