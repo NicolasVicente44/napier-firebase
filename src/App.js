@@ -49,7 +49,7 @@ function App() {
   };
 
   return (
-    <Router basename="/napier-firebase">
+    <Router>
       <LocationWatcher>
         <Routes>
           <Route
