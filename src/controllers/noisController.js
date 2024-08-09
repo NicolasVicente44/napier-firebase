@@ -18,9 +18,6 @@ export const fetchNois = async () => {
       const data = doc.data();
       return { id: doc.id, ...data };
     });
-
-
-
     return nois;
   } catch (error) {
     console.error("Error fetching NOIs: ", error);
@@ -34,7 +31,6 @@ export const fetchNoiById = async (id) => {
     const docRef = doc(db, "nois", id);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-
       return { id: docSnap.id, ...docSnap.data() };
     } else {
       console.log("No such document!");

@@ -11,7 +11,6 @@ const BugReportModal = ({ isOpen, closeModal }) => {
     email: "",
     description: "",
     urgency: "low",
-    file: null,
   });
 
   const formRef = useRef(null);
@@ -23,14 +22,6 @@ const BugReportModal = ({ isOpen, closeModal }) => {
       [name]: value,
     }));
   };
-
-  const handleFileChange = (e) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      file: e.target.files[0],
-    }));
-  };
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -68,7 +59,7 @@ const BugReportModal = ({ isOpen, closeModal }) => {
       isOpen={isOpen}
       onRequestClose={closeModal}
       contentLabel="Bug Report Modal"
-      className="fixed inset-0 flex items-center justify-center p-4 bg-transparent"
+      className="fixed z-40 inset-0 flex items-center justify-center p-4 bg-transparent"
       overlayClassName="fixed inset-0 bg-gray-900 bg-opacity-70"
     >
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
@@ -104,7 +95,7 @@ const BugReportModal = ({ isOpen, closeModal }) => {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Description, please be verbose
+              Issue description, please be verbose
             </label>
             <textarea
               name="description"
@@ -131,17 +122,7 @@ const BugReportModal = ({ isOpen, closeModal }) => {
               <option value="high">High</option>
             </select>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Attach a file or image
-            </label>
-            <input
-              type="file"
-              name="file"
-              onChange={handleFileChange}
-              className="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
-            />
-          </div>
+
           <div className="flex justify-end space-x-2 mt-4">
             <button
               type="submit"

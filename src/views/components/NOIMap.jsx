@@ -44,7 +44,7 @@ const NOIMap = ({ user }) => {
           <div className="container mx-auto px-6 py-8 relative z-10">
             <div className="bg-white p-6 rounded-lg shadow-md relative z-10">
               <div className="flex items-center justify-between mb-4">
-                <h1 className="text-3xl font-bold mb-6">NOI Case Map</h1>
+                <h1 className="text-3xl font-bold mb-6">NOI All Case Map</h1>
               </div>
               {loading ? (
                 <div className="flex justify-center items-center h-64">

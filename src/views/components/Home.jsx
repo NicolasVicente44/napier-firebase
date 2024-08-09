@@ -8,6 +8,7 @@ import {
   deleteLink,
 } from "../../controllers/linkController";
 import Modal from "../components/Modal";
+import KanbanBoard from "./KanbanBoard";
 
 const Home = ({ user }) => {
   const [activities, setActivities] = useState([]);
@@ -81,10 +82,14 @@ const Home = ({ user }) => {
                 NOIs, view detailed reports/data mappings, automate document
                 creation, and more.
               </p>
+
+              <KanbanBoard />
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-blue-100 min-h-80 p-4 rounded-lg shadow-sm">
+                <div className="bg-blue-100 min-h-96 p-4 rounded-lg shadow-sm">
                   <div className="flex justify-between items-center mb-2">
-                    <h2 className="text-xl font-semibold">Custom Quick Links</h2>
+                    <h2 className="text-xl font-semibold">
+                      Custom Quick Links
+                    </h2>
                     <button
                       onClick={() => setIsModalOpen(true)}
                       className="bg-blue-600 text-white px-2 py-1 rounded"

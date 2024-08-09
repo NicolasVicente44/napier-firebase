@@ -89,19 +89,18 @@ const FileDisplay = ({ caseId }) => {
               download
               className="block mb-4 px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600 transition-colors duration-150 ease-in-out"
             >
-              Download
+              Download/View
             </a>
             {selectedFile ? (
               <iframe src={fileUrl} className="w-full h-96" />
             ) : (
-                <div className="relative w-full h-0 pb-[56.25%] overflow-hidden">
+              <div className="relative w-full h-0 pb-[56.25%] overflow-hidden">
                 <img
                   src="your-image-url.jpg"
                   alt="Description"
                   className="absolute top-0 left-0 w-full h-full object-contain"
                 />
               </div>
-              
             )}
           </div>
         )}

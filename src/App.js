@@ -20,7 +20,7 @@ import NOIDetails from "./views/NOI/NOIDetails";
 import Favourites from "./views/components/Favorites";
 import NOIMap from "./views/components/NOIMap";
 import Documents from "./views/components/Documents";
-import BugReportFAB from "./views/components/BugReportFAB"; // Import the FAB component
+import BugReportFAB from "./views/components/BugReportFAB";
 
 // Component to track and store the last visited path
 const LocationWatcher = ({ children }) => {
@@ -33,6 +33,14 @@ const LocationWatcher = ({ children }) => {
   }, [location]);
 
   return <>{children}</>;
+};
+
+// Component to render BugReportFAB based on the current route
+const RouteGuard = ({ user }) => {
+  const location = useLocation();
+  const isMapRoute = location.pathname === "/noimap";
+
+  return <>{user && !isMapRoute && <BugReportFAB />}</>;
 };
 
 function App() {
@@ -120,10 +128,11 @@ function App() {
           />
           <Route path="/" element={<Navigate to={getDefaultPath()} />} />
         </Routes>
-        {user && <BugReportFAB />} {/* Render FAB only if user is logged in */}
+        <RouteGuard user={user} />
       </LocationWatcher>
     </Router>
   );
 }
 
 export default App;
+  
