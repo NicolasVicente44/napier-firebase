@@ -77,8 +77,7 @@ export const logCRUDActivity = async (action, collectionName, documentId) => {
     reopen: `A document was reopened in ${collectionName}`,
   };
 
-  const description =
-    descriptions[action] 
+  const description = descriptions[action];
   await logActivity("CRUD", description);
 };
 
